@@ -2,7 +2,12 @@
 #define BOOT_H
 
 #include <3ds.h>
-#include "titles.h"
+
+typedef struct
+{
+	u8 mediatype;
+	u64 title_id;
+}titleInfo_s;
 
 extern int targetProcessId;
 extern titleInfo_s target_title;
