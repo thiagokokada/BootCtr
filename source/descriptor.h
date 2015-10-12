@@ -35,10 +35,6 @@ typedef struct
 	executableMetadata_s executableMetadata;
 }descriptor_s;
 
-void initDescriptor(descriptor_s* d);
-void freeDescriptor(descriptor_s* d);
-void loadDescriptor(descriptor_s* d, char* path);
-
 #ifdef __cplusplus
 }
 #endif
