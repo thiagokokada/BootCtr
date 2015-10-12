@@ -2,7 +2,6 @@
 #define BOOT_H
 
 #include <3ds.h>
-#include "scanner.h"
 #include "titles.h"
 
 extern int targetProcessId;

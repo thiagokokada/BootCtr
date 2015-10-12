@@ -4,7 +4,6 @@
 #include <3ds.h>
 #include <sys/stat.h>
 
-#include "menu.h"
 #include "filesystem.h"
 #include "boot.h"
 #include "scanner.h"
