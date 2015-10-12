@@ -4,7 +4,9 @@ Homebrew Launcher emergency boot
 By mashers at GBATemp, modified by m45t3r
 -----------------------------------------
 
-Based on 3DS Homebrew Launcher code by [Smealum][1].
+Based on 3DS Homebrew Launcher code by [Smealum][1]. The original version is
+from [mashers][2], I simply removed some unused code used by Homebrew Launcher
+that isn't necessary in a simple bootloader.
 
 Installation:
 -------------
@@ -42,11 +44,12 @@ case KEY_L:
 ```
 
 After that, compile a new binary using the included ``Makefile`` and
-[devkitPro][2]. If devkitPro is correctly installed all you need to do is:
+[devkitPro][3]. If devkitPro is correctly installed all you need to do is:
 
     $ make
 
 And copy/rename the new ``HBL-Emergency.3dsx`` file to your SD card.
 
 [1]: https://github.com/smealum/3ds_hb_menu
-[2]: http://devkitpro.org/
+[2]: https://gbatemp.net/threads/release-homebrew-emergency-launcher.399394/
+[3]: http://devkitpro.org/
