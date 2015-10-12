@@ -6,7 +6,6 @@
 
 #include "filesystem.h"
 #include "boot.h"
-#include "scanner.h"
 
 // handled in main
 // doing it in main is preferred because execution ends in launching another 3dsx
