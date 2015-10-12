@@ -1,6 +1,5 @@
 #pragma once
 #include <3ds.h>
-#include "menu.h"
 
 extern FS_archive sdmcArchive;
 

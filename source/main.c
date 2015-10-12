@@ -67,5 +67,5 @@ int main()
     aptExit();
     srvExit();
 
-    return bootApp(execPath, NULL);
+    return bootApp(execPath);
 }

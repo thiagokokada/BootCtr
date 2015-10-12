@@ -3,7 +3,6 @@
 #include <3ds.h>
 
 #include "filesystem.h"
-#include "smdh.h"
 #include "utils.h"
 
 FS_archive sdmcArchive;
