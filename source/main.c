@@ -1,9 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <3ds.h>
-#include <sys/stat.h>
-
 #include "filesystem.h"
 #include "boot.h"
 

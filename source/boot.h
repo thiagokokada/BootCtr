@@ -1,6 +1,4 @@
-#ifndef BOOT_H
-#define BOOT_H
-
+#pragma once
 #include <3ds.h>
 
 typedef struct
@@ -14,5 +12,3 @@ extern titleInfo_s target_title;
 
 bool isNinjhax2(void);
 int bootApp(char* executablePath);
-
-#endif
