@@ -63,24 +63,10 @@ int bootApp(char* executablePath)
 	fsExit();
 
 	// set argv/argc
-	argbuffer[0] = 0;
 	argbuffer_length = 0x200*4;
-	// TEMP
-	// if(netloader_boot) {
-	// 	char *ptr = netloaded_commandline;
-	// 	char *dst = (char*)&argbuffer[1];
-	// 	while (ptr < netloaded_commandline + netloaded_cmdlen) {
-	// 		char *arg = ptr;
-	// 		strcpy(dst,ptr);
-	// 		ptr += strlen(arg) + 1;
-	// 		dst += strlen(arg) + 1;
-	// 		argbuffer[0]++;
-	// 	}
-	// }else{
-		argbuffer[0]=1;
-		snprintf((char*)&argbuffer[1], 0x200*4 - 4, "sdmc:%s", executablePath);
-		argbuffer_length = strlen((char*)&argbuffer[1]) + 4 + 1; // don't forget null terminator !
-	// }
+	argbuffer[0]=1;
+	snprintf((char*)&argbuffer[1], 0x200*4 - 4, "sdmc:%s", executablePath);
+	argbuffer_length = strlen((char*)&argbuffer[1]) + 4 + 1; // don't forget null terminator !
 
 	// figure out the preferred way of running the 3dsx
 	if(!hbInit())
