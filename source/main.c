@@ -29,7 +29,7 @@ int main()
     irrstInit(NULL);
     acInit();
     ptmInit();
-    titlesInit();
+    amInit();
 
     // offset potential issues caused by homebrew that just ran
     aptOpenSession();
@@ -57,7 +57,7 @@ int main()
     }
 
     // cleanup whatever we have to cleanup
-    titlesExit();
+    amExit();
     ptmExit();
     acExit();
     irrstExit();
