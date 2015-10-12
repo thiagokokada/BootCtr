@@ -73,9 +73,3 @@ bool fileExists(char* path, FS_archive* archive)
 }
 
 extern int debugValues[4];
-
-void addFileToMenu(menu_s* m, char* execPath) {}
-
-void addDirectoryToMenu(menu_s* m, char* path) {}
-
-void scanHomebrewDirectory(menu_s* m, char* path) {}

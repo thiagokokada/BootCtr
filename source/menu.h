@@ -62,7 +62,3 @@ typedef struct
 	u16 touchTimer;
 	bool atEquilibrium;
 }menu_s;
-
-void initEmptyMenuEntry(menuEntry_s* me);
-void initMenuEntry(menuEntry_s* me, char* execPath, char* name, char* description, char* author, u8* iconData);
-void scanMenuEntry(menuEntry_s* me);

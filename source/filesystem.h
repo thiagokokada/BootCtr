@@ -14,8 +14,3 @@ void closeSDArchive();
 //general fs stuff
 int loadFile(char* path, void* dst, FS_archive* archive, u64 maxSize);
 bool fileExists(char* path, FS_archive* archive);
-
-//menu fs stuff
-void addDirectoryToMenu(menu_s* m, char* path);
-void addFileToMenu(menu_s* m, char* execPath);
-void scanHomebrewDirectory(menu_s* m, char* path);
