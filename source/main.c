@@ -5,33 +5,15 @@
 
 #include "filesystem.h"
 #include "boot.h"
-#include "ini.h"
+#include "config.h"
 
 #define DEFAULT_BOOT "/boot_default.3dsx"
 #define DEFAULT_DELAY 10000000
 #define INI_FILE "/boot_config.ini"
 
+// ugly global variable, however I don't know a better way to pass the pressed
+// key to handler function
 char *KEY_PRESSED;
-
-typedef struct
-{
-    char *path;
-    unsigned long long delay;
-} configuration;
-
-static int handler(void *user, const char *section, const char *name, const char *value)
-{
-    configuration *pconfig = (configuration *) user;
-    #define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0
-    if (MATCH(KEY_PRESSED, "path")) {
-        pconfig->path = strdup(value);
-    } else if (MATCH(KEY_PRESSED, "delay")) {
-        pconfig->delay = atoi(value);
-    } else {
-        return 0;
-    }
-    return 1;
-}
 
 // handled in main
 // doing it in main is preferred because execution ends in launching another 3dsx
