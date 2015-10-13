@@ -31,29 +31,20 @@ booted instead.
 allowing boot of up-to 12+1 homebrews (12 using keys plus 1 default). In N3DS,
 boot up-to 14+1.
 
-Modifications and compiling
+Compiling
 ---------------------------
 
-To add another entry, simple edit ``source/main.c`` file and add another entry
-in the ``switch..case`` part. For example, if you want to add a third entry
-using the left shoulder (L) you would add the following lines:
+First, clone this repository including the submodules:
 
-```C
-switch (key) {
-/* ... */
-case KEY_L:
-   execPath = "/boot_3.3dsx";
-   break;
-/* ... */
-}
-```
+    $ git clone --recursive https://github.com/m45t3r/HBL-Emergency.git
 
-After that, compile a new binary using the included ``Makefile`` and
-[devkitPro][3]. If devkitPro is correctly installed all you need to do is:
+Compile a new binary using the included ``Makefile`` and [devkitPro][3].
+If devkitPro is correctly installed all you need to do is:
 
     $ make
 
-And copy/rename the new ``HBL-Emergency.3dsx`` file to your SD card.
+And copy/rename the new ``HBL-Emergency.3dsx`` file to your SD card. Do not
+forget to copy ``boot_config.ini`` too.
 
 [1]: https://github.com/smealum/3ds_hb_menu
 [2]: https://gbatemp.net/threads/release-homebrew-emergency-launcher.399394/
