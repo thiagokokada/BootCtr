@@ -11,20 +11,25 @@ that isn't necessary in a simple bootloader.
 Installation:
 -------------
 
-* Rename the boot.3dsx file already on your SD card to boot_1.3dsx.
+* Rename the ``boot.3dsx`` file already on your SD card to ``boot_default.3dsx``.
 * Place some other launcher or FTP client in the root of your SD card and call
-it boot_2.3dsx.
-* Rename HBL-Emergency.3dsx to boot.3dsx, copy the file from this archive to the
-root of your SD card.
+it ``boot_1.3dsx``.
+* Rename ``HBL-Emergency.3dsx`` to ``boot.3dsx``, copy this file and
+``boot_config.ini`` to the root of your SD card.
+* Change ``boot_config.ini`` according to your necessities.
 
 Usage
 -----
 
 * Boot up your homebrew hax as usual.
-* If you do nothing, then boot_1.3dsx will be launched (your normal launcher).
+* If you do nothing, then ``boot_default.3dsx`` will be launched (your normal
+* launcher).
 * If something goes wrong with your launcher, hold down the right shoulder (R)
-button while launching your homebrew hax. This will cause boot_2.3dsx to be
+button while launching your homebrew hax. This will cause ``boot_1.3dsx`` to be
 booted instead.
+* You may change the behavior using the included ``boot_config.ini`` file,
+allowing boot of up-to 12+1 homebrews (12 using keys plus 1 default). In N3DS,
+boot up-to 14+1.
 
 Modifications and compiling
 ---------------------------
