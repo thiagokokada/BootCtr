@@ -1,3 +1,5 @@
+#include <3ds.h>
+
 #include "filesystem.h"
 #include "boot.h"
 
@@ -52,5 +54,9 @@ int main()
     aptExit();
     srvExit();
 
+    // wait some time to improve boot chance in CFWs
+    svcSleepThread(5000000ULL);
+
+    // run application
     return bootApp(execPath);
 }
