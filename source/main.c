@@ -33,9 +33,6 @@ int main()
     initFilesystem();
     openSDArchive();
     hidInit(NULL);
-    gfxInitDefault();
-    
-    consoleInit(GFX_TOP, NULL);
 
     // offset potential issues caused by homebrew that just ran
     aptOpenSession();
@@ -88,15 +85,9 @@ int main()
     }
     
     configuration config = { .path = DEFAULT_BOOT, .delay = DEFAULT_DELAY };
-    if (ini_parse(INI_FILE, handler, &config) < 0) {
-        printf("Can't load '%s'\n, using default...\n", INI_FILE);
-    }
-    
-    printf("%s detected!\n", KEY_PRESSED);
-    printf("Booting %s in %llu ms...\n", config.path, config.delay);
+    ini_parse(INI_FILE, handler, &config);
 
     // cleanup whatever we have to cleanup
-    gfxExit();
     hidExit();
     exitFilesystem();
     closeSDArchive();
