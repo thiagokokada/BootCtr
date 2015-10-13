@@ -8,8 +8,9 @@
 #include "config.h"
 
 #define DEFAULT_BOOT "/boot_default.3dsx"
-#define DEFAULT_DELAY 10000000
+#define DEFAULT_DELAY 100 /* ms */
 #define INI_FILE "/boot_config.ini"
+#define MS_TO_NS 1000000ULL
 
 // ugly global variable, however I don't know a better way to pass the pressed
 // key to handler function
@@ -102,7 +103,9 @@ int main()
     srvExit();
 
     // wait some time to improve boot chance in CFWs
-    svcSleepThread(config.delay);
+    // we convert to microseconds here, since nanoseconds is to fast
+    // to be useful
+    svcSleepThread(config.delay * MS_TO_NS);
 
     // run application
     return bootApp(config.path);

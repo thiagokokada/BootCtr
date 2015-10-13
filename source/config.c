@@ -6,7 +6,7 @@ int handler(void *user, const char *section, const char *name, const char *value
 	if (MATCH(KEY_PRESSED, "path")) {
 		pconfig->path = strdup(value);
 	} else if (MATCH(KEY_PRESSED, "delay")) {
-		pconfig->delay = atoi(value);
+		pconfig->delay = atoll(value);
 	} else {
 		return 0;
 	}
