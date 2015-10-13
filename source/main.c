@@ -42,6 +42,7 @@ int main()
     hidScanInput();
 
     u32 key = hidKeysDown();
+    // https://github.com/smealum/ctrulib/blob/master/libctru/include/3ds/services/hid.h
     switch (key) {
         case KEY_A:
             KEY_PRESSED = "KEY_A";
@@ -55,17 +56,17 @@ int main()
         case KEY_START:
             KEY_PRESSED = "KEY_START";
             break;
-        case KEY_DRIGHT:
-            KEY_PRESSED = "KEY_DRIGHT";
+        case KEY_RIGHT:
+            KEY_PRESSED = "KEY_RIGHT";
             break;
-        case KEY_DLEFT:
-            KEY_PRESSED = "KEY_DLEFT";
+        case KEY_LEFT:
+            KEY_PRESSED = "KEY_LEFT";
             break;
-        case KEY_DUP:
-            KEY_PRESSED = "KEY_DUP";
+        case KEY_UP:
+            KEY_PRESSED = "KEY_UP";
             break;
-        case KEY_DDOWN:
-            KEY_PRESSED = "KEY_DDOWN";
+        case KEY_DOWN:
+            KEY_PRESSED = "KEY_DOWN";
             break;
         case KEY_R:
             KEY_PRESSED = "KEY_R";
@@ -79,11 +80,17 @@ int main()
         case KEY_Y:
             KEY_PRESSED = "KEY_Y";
             break;
+        case KEY_ZL:
+            KEY_PRESSED = "KEY_ZL";
+            break;
+        case KEY_ZR:
+            KEY_PRESSED = "KEY_ZR";
+            break;
         default:
             KEY_PRESSED = "DEFAULT";
             break;
     }
-    
+
     configuration config = { .path = DEFAULT_BOOT, .delay = DEFAULT_DELAY };
     ini_parse(INI_FILE, handler, &config);
 
