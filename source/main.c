@@ -30,6 +30,10 @@ int main()
     initFilesystem();
     openSDArchive();
     hidInit(NULL);
+    irrstInit(NULL);
+    acInit();
+    ptmInit();
+    amInit();
 
     // offset potential issues caused by homebrew that just ran
     aptOpenSession();
@@ -99,6 +103,10 @@ int main()
     ini_parse(INI_FILE, handler, &config);
 
     // cleanup whatever we have to cleanup
+    amExit();
+    ptmExit();
+    acExit();
+    irrstExit();
     hidExit();
     exitFilesystem();
     closeSDArchive();
