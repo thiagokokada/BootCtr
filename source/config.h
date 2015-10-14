@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ini.h"
+#include "inih/ini.h"
 
 typedef struct
 {
