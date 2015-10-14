@@ -5,11 +5,11 @@
 
 #include "ini.h"
 
-// used to pass pressed key information from main() to handler()
-extern char *KEY_PRESSED;
-
 typedef struct
 {
+    // "key" is the pressed key got in the main() function
+    // "path" and "delay" are the results read from handler() function
+    char *key;
     char *path;
     unsigned long long delay;
 } configuration;

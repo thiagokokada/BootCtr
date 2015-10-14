@@ -12,10 +12,6 @@
 #define INI_FILE "/boot_config.ini"
 #define MS_TO_NS 1000000ULL
 
-// ugly global variable, however I don't know a better way to pass the pressed
-// key to handler function
-char *KEY_PRESSED;
-
 // handled in main
 // doing it in main is preferred because execution ends in launching another 3dsx
 void __appInit()
@@ -40,59 +36,66 @@ int main()
     APT_SetAppCpuTimeLimit(NULL, 0);
     aptCloseSession();
 
-    hidScanInput();
+    // initialize default configuration
+    configuration config = {
+        .key = "DEFAULT",
+        .path = DEFAULT_BOOT,
+        .delay = DEFAULT_DELAY
+    };
 
-    u32 key = hidKeysDown();
     // https://github.com/smealum/ctrulib/blob/master/libctru/include/3ds/services/hid.h
+    hidScanInput();
+    u32 key = hidKeysDown();
     switch (key) {
         case KEY_A:
-            KEY_PRESSED = "KEY_A";
+            config.key = "KEY_A";
             break;
         case KEY_B:
-            KEY_PRESSED = "KEY_B";
+            config.key = "KEY_B";
             break;
         case KEY_SELECT:
-            KEY_PRESSED = "KEY_SELECT";
+            config.key = "KEY_SELECT";
             break;
         case KEY_START:
-            KEY_PRESSED = "KEY_START";
+            config.key = "KEY_START";
             break;
         case KEY_RIGHT:
-            KEY_PRESSED = "KEY_RIGHT";
+            config.key = "KEY_RIGHT";
             break;
         case KEY_LEFT:
-            KEY_PRESSED = "KEY_LEFT";
+            config.key = "KEY_LEFT";
             break;
         case KEY_UP:
-            KEY_PRESSED = "KEY_UP";
+            config.key = "KEY_UP";
             break;
         case KEY_DOWN:
-            KEY_PRESSED = "KEY_DOWN";
+            config.key = "KEY_DOWN";
             break;
         case KEY_R:
-            KEY_PRESSED = "KEY_R";
+            config.key = "KEY_R";
             break;
         case KEY_L:
-            KEY_PRESSED = "KEY_L";
+            config.key = "KEY_L";
             break;
         case KEY_X:
-            KEY_PRESSED = "KEY_X";
+            config.key = "KEY_X";
             break;
         case KEY_Y:
-            KEY_PRESSED = "KEY_Y";
+            config.key = "KEY_Y";
             break;
         case KEY_ZL:
-            KEY_PRESSED = "KEY_ZL";
+            config.key = "KEY_ZL";
             break;
         case KEY_ZR:
-            KEY_PRESSED = "KEY_ZR";
+            config.key = "KEY_ZR";
             break;
         default:
-            KEY_PRESSED = "DEFAULT";
+            config.key = "DEFAULT";
             break;
     }
 
-    configuration config = { .path = DEFAULT_BOOT, .delay = DEFAULT_DELAY };
+    // the handler only change the "config" variable if it finds a
+    // valid configuration
     ini_parse(INI_FILE, handler, &config);
 
     // cleanup whatever we have to cleanup
