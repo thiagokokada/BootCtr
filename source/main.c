@@ -108,8 +108,8 @@ int main()
     acExit();
     irrstExit();
     hidExit();
-    exitFilesystem();
     closeSDArchive();
+    exitFilesystem();
     aptExit();
     srvExit();
 
