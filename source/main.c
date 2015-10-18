@@ -121,7 +121,7 @@ int main()
     srvExit();
 
     // wait some time to improve boot chance in CFWs
-    // we convert to microseconds here, since nanoseconds is to fast
+    // we convert to microseconds here, since nanoseconds is too fast
     // to be useful
     svcSleepThread(app.config.delay * MS_TO_NS);
 
