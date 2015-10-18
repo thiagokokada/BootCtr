@@ -5,6 +5,7 @@
 
 #include "filesystem.h"
 #include "boot.h"
+#include "scanner.h"
 #include "config.h"
 
 #define DEFAULT_BOOT "/boot_default.3dsx"
@@ -102,6 +103,9 @@ int main()
     // valid configuration
     ini_parse(INI_FILE, handler, &config);
 
+    executableMetadata_s em;
+    scanExecutable2(&em, config.path);
+
     // cleanup whatever we have to cleanup
     amExit();
     ptmExit();
@@ -119,5 +123,5 @@ int main()
     svcSleepThread(config.delay * MS_TO_NS);
 
     // run application
-    return bootApp(config.path);
+    return bootApp(config.path, &em);
 }

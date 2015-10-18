@@ -1,5 +1,8 @@
 #pragma once
+
 #include <3ds.h>
+
+#include "scanner.h"
 
 typedef struct
 {
@@ -11,4 +14,4 @@ extern int targetProcessId;
 extern titleInfo_s target_title;
 
 bool isNinjhax2(void);
-int bootApp(char* executablePath);
+int bootApp(char* executablePath, executableMetadata_s *em);

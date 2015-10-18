@@ -1,4 +1,5 @@
 #pragma once
+
 #include <3ds.h>
 
 extern FS_archive sdmcArchive;

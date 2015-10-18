@@ -14,7 +14,7 @@ void initFilesystem(void)
 
 void exitFilesystem(void)
 {
-	sdmcExit(); //Crashes here
+	sdmcExit();
 	fsExit();
 }
 
