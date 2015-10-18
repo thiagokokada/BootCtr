@@ -13,6 +13,11 @@
 #define INI_FILE "/boot_config.ini"
 #define MS_TO_NS 1000000ULL
 
+typedef struct {
+    configuration config;
+    executableMetadata_s em;
+} application;
+
 // handled in main
 // doing it in main is preferred because execution ends in launching another 3dsx
 void __appInit()
@@ -41,11 +46,10 @@ int main()
     APT_SetAppCpuTimeLimit(NULL, 0);
     aptCloseSession();
 
-    // initialize default configuration
-    configuration config = {
-        .key = "DEFAULT",
-        .path = DEFAULT_BOOT,
-        .delay = DEFAULT_DELAY
+    application app = {
+        .config.key = "DEFAULT",
+        .config.path = DEFAULT_BOOT,
+        .config.delay = DEFAULT_DELAY
     };
 
     // https://github.com/smealum/ctrulib/blob/master/libctru/include/3ds/services/hid.h
@@ -53,58 +57,57 @@ int main()
     u32 key = hidKeysDown();
     switch (key) {
         case KEY_A:
-            config.key = "KEY_A";
+            app.config.key = "KEY_A";
             break;
         case KEY_B:
-            config.key = "KEY_B";
+            app.config.key = "KEY_B";
             break;
         case KEY_SELECT:
-            config.key = "KEY_SELECT";
+            app.config.key = "KEY_SELECT";
             break;
         case KEY_START:
-            config.key = "KEY_START";
+            app.config.key = "KEY_START";
             break;
         case KEY_RIGHT:
-            config.key = "KEY_RIGHT";
+            app.config.key = "KEY_RIGHT";
             break;
         case KEY_LEFT:
-            config.key = "KEY_LEFT";
+            app.config.key = "KEY_LEFT";
             break;
         case KEY_UP:
-            config.key = "KEY_UP";
+            app.config.key = "KEY_UP";
             break;
         case KEY_DOWN:
-            config.key = "KEY_DOWN";
+            app.config.key = "KEY_DOWN";
             break;
         case KEY_R:
-            config.key = "KEY_R";
+            app.config.key = "KEY_R";
             break;
         case KEY_L:
-            config.key = "KEY_L";
+            app.config.key = "KEY_L";
             break;
         case KEY_X:
-            config.key = "KEY_X";
+            app.config.key = "KEY_X";
             break;
         case KEY_Y:
-            config.key = "KEY_Y";
+            app.config.key = "KEY_Y";
             break;
         case KEY_ZL:
-            config.key = "KEY_ZL";
+            app.config.key = "KEY_ZL";
             break;
         case KEY_ZR:
-            config.key = "KEY_ZR";
+            app.config.key = "KEY_ZR";
             break;
         default:
-            config.key = "DEFAULT";
+            app.config.key = "DEFAULT";
             break;
     }
 
     // the handler only change the "config" variable if it finds a
     // valid configuration
-    ini_parse(INI_FILE, handler, &config);
+    ini_parse(INI_FILE, handler, &app.config);
 
-    executableMetadata_s em;
-    scanExecutable2(&em, config.path);
+    scanExecutable2(&app.em, app.config.path);
 
     // cleanup whatever we have to cleanup
     amExit();
@@ -120,8 +123,8 @@ int main()
     // wait some time to improve boot chance in CFWs
     // we convert to microseconds here, since nanoseconds is to fast
     // to be useful
-    svcSleepThread(config.delay * MS_TO_NS);
+    svcSleepThread(app.config.delay * MS_TO_NS);
 
     // run application
-    return bootApp(config.path, &em);
+    return bootApp(app.config.path, &app.em);
 }
