@@ -52,6 +52,11 @@ int main()
         .config.delay = DEFAULT_DELAY
     };
 
+    // load default user configuration, overriding the app defaults
+    // the handler only change the "config" variable if it finds a
+    // valid configuration, so even without error checking it should be safe
+    ini_parse(INI_FILE, handler, &app.config);
+
     hidScanInput();
     u32 key = hidKeysDown();
     char *aux;
@@ -69,9 +74,12 @@ int main()
     }
     app.config.key = aux;
 
-    // the handler only change the "config" variable if it finds a
-    // valid configuration
-    ini_parse(INI_FILE, handler, &app.config);
+    // don't need to read the config file again if we will use the defaults
+    // instead of using strcmp, we compare only the first letter, that will
+    // be either 'K' from "KEY_" or 'D' from "DEFAULT"
+    if (aux[0] != 'D') {
+        ini_parse(INI_FILE, handler, &app.config);
+    }
 
     scanExecutable2(&app.em, app.config.path);
 
