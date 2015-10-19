@@ -52,56 +52,22 @@ int main()
         .config.delay = DEFAULT_DELAY
     };
 
-    // https://github.com/smealum/ctrulib/blob/master/libctru/include/3ds/services/hid.h
     hidScanInput();
     u32 key = hidKeysDown();
+    char *aux;
     switch (key) {
-        case KEY_A:
-            app.config.key = "KEY_A";
+        // using X-macros to generate each switch-case rules
+        // https://en.wikibooks.org/wiki/C_Programming/Preprocessor#X-Macros
+        #define KEY(k) \
+        case KEY_##k: \
+            aux = "KEY_"#k; \
             break;
-        case KEY_B:
-            app.config.key = "KEY_B";
-            break;
-        case KEY_SELECT:
-            app.config.key = "KEY_SELECT";
-            break;
-        case KEY_START:
-            app.config.key = "KEY_START";
-            break;
-        case KEY_RIGHT:
-            app.config.key = "KEY_RIGHT";
-            break;
-        case KEY_LEFT:
-            app.config.key = "KEY_LEFT";
-            break;
-        case KEY_UP:
-            app.config.key = "KEY_UP";
-            break;
-        case KEY_DOWN:
-            app.config.key = "KEY_DOWN";
-            break;
-        case KEY_R:
-            app.config.key = "KEY_R";
-            break;
-        case KEY_L:
-            app.config.key = "KEY_L";
-            break;
-        case KEY_X:
-            app.config.key = "KEY_X";
-            break;
-        case KEY_Y:
-            app.config.key = "KEY_Y";
-            break;
-        case KEY_ZL:
-            app.config.key = "KEY_ZL";
-            break;
-        case KEY_ZR:
-            app.config.key = "KEY_ZR";
-            break;
+        #include "keys.def"
         default:
-            app.config.key = "DEFAULT";
+            aux = "DEFAULT";
             break;
     }
+    app.config.key = aux;
 
     // the handler only change the "config" variable if it finds a
     // valid configuration

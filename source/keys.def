@@ -1,0 +1,26 @@
+// https://github.com/smealum/ctrulib/blob/master/libctru/include/3ds/services/hid.h#L5
+KEY(A)
+KEY(B)
+KEY(SELECT)
+KEY(START)
+KEY(R)
+KEY(L)
+KEY(X)
+KEY(Y)
+// Generic catch-all directions
+// So circle-pad UP and d-pad UP are actually the same thing, for example
+KEY(RIGHT)
+KEY(LEFT)
+KEY(UP)
+KEY(DOWN)
+// N3DS triggers
+KEY(ZL)
+KEY(ZR)
+// N3DS c-stick
+KEY(CSTICK_RIGHT)
+KEY(CSTICK_LEFT)
+KEY(CSTICK_UP)
+KEY(CSTICK_DOWN)
+// Disabled, not actually provided by HID
+// KEY(TOUCH)
+#undef KEY

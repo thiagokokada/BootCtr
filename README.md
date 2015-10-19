@@ -29,7 +29,7 @@ button while launching your homebrew hax. This will cause ``boot_1.3dsx`` to be
 booted instead.
 * You may change the behavior using the included ``boot_config.ini`` file,
 allowing boot of up-to 12+1 homebrews (12 using keys plus 1 default). In N3DS,
-boot up-to 14+1.
+boot up-to 18+1.
 
 Compiling
 ---------------------------
