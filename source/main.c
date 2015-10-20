@@ -78,6 +78,10 @@ int main()
     int error = ini_parse(INI_FILE, handler, &app.config);
     switch (error) {
         case 0:
+            if (app.config.path[0] != '/') {
+                print_error("%s is a invalid path (missing '/')",
+                        app.config.path);
+            }
             if (!file_exists(app.config.path)) {
                 print_error("File %s not found", app.config.path);
             }
