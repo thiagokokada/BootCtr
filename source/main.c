@@ -7,6 +7,7 @@
 #include "boot.h"
 #include "scanner.h"
 #include "config.h"
+#include "misc.h"
 
 #define DEFAULT_BOOT "/boot_default.3dsx"
 #define DEFAULT_DELAY 100 /* ms */
@@ -74,11 +75,29 @@ int main()
     }
     app.config.key = aux;
 
-    // don't need to read the config file again if we will use the defaults
-    // instead of using strcmp, we compare only the first letter, that will
-    // be either 'K' from "KEY_" or 'D' from "DEFAULT"
-    if (aux[0] != 'D') {
-        ini_parse(INI_FILE, handler, &app.config);
+    int error = ini_parse(INI_FILE, handler, &app.config);
+    switch (error) {
+        case 0:
+            if (!file_exists(app.config.path)) {
+                print_error("File %s not found", app.config.path);
+            }
+            break;
+        case -1:
+            if (!file_exists(DEFAULT_BOOT)) {
+                print_error("File %s and config file %s not found",
+                        DEFAULT_BOOT, INI_FILE);
+            }
+            break;
+        case -2:
+            // never happens since we are using stack instead of memory
+            // allocations in inih
+            break;
+        default:
+            if (!file_exists(DEFAULT_BOOT)) {
+                print_error("File %s not found and error found in config "
+                        "file %s on line %d", DEFAULT_BOOT, INI_FILE, error);
+            }
+            break;
     }
 
     scanExecutable2(&app.em, app.config.path);
