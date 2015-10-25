@@ -49,11 +49,6 @@ int main()
         .config.offset = DEFAULT_OFFSET
     };
 
-    // load default user configuration, overriding the app defaults
-    // the handler only change the "config" variable if it finds a
-    // valid configuration, so even without error checking it should be safe
-    ini_parse(INI_FILE, handler, &app.config);
-
     hidScanInput();
     u32 key = hidKeysDown();
     char *aux;
@@ -100,30 +95,30 @@ int main()
             break;
     }
 
+    // sleep for some ms, to increase boot rate in CFWs
+    // to be reliable, it needs to wait right after the payload
+    // is loaded
+    svcSleepThread(app.config.delay);
+
     // run application
     if (app.config.payload) {
         if (brahma_init()) {
             if (!load_arm9_payload(app.config.path, app.config.offset, 0))
                 goto error;
+            exit_services();
             firm_reboot();
             brahma_exit();
-            // sleep for some ms, to increase boot rate in CFWs
-            // to be reliable, it needs to wait right after the payload
-            // is loaded
-            svcSleepThread(app.config.delay);
-            exit_services();
             return 0;
         } else {
             goto error;
         }
     } else {
-        svcSleepThread(app.config.delay);
         exit_services();
         return bootApp(app.config.path, &app.em);
     }
 
 error:
-    exit_services();
     print_error("Can't load file %s", app.config.path);
+    exit_services();
     return 1;
 }

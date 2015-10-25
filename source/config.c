@@ -10,7 +10,7 @@ int handler(void *user, const char *section, const char *name, const char *value
 		pconfig->delay = strtoull(value, NULL, 10) * MS_TO_NS;
 	} else if (MATCH(pconfig->key, "payload")) {
 		pconfig->payload = strtoul(value, NULL, 10);
-	} else if (MATCH(pconfig->key, "payload_size")) {
+	} else if (MATCH(pconfig->key, "offset")) {
 		pconfig->offset = strtoul(value, NULL, 0);
 	}
 	return 1;
