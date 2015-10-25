@@ -5,6 +5,8 @@
 
 #include "inih/ini.h"
 
+#define MS_TO_NS 1000000ULL
+
 typedef struct
 {
     // "key" is the pressed key got in the main() function
@@ -12,7 +14,8 @@ typedef struct
     char *key;
     char *path;
     unsigned long long delay;
-    char payload;
+    unsigned char payload;
+    unsigned long offset;
 } configuration;
 
 #define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0

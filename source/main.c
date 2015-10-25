@@ -13,8 +13,8 @@
 #define DEFAULT_BOOT "/boot_default.3dsx"
 #define DEFAULT_DELAY 100 /* ms */
 #define DEFAULT_PAYLOAD 0 /* 0 - false; 1 - true */
+#define DEFAULT_OFFSET 0x12000
 #define INI_FILE "/boot_config.ini"
-#define MS_TO_NS 1000000ULL
 
 typedef struct {
     configuration config;
@@ -45,7 +45,8 @@ int main()
         .config.key = "DEFAULT",
         .config.path = DEFAULT_BOOT,
         .config.delay = DEFAULT_DELAY,
-        .config.payload = DEFAULT_PAYLOAD
+        .config.payload = DEFAULT_PAYLOAD,
+        .config.offset = DEFAULT_OFFSET
     };
 
     // load default user configuration, overriding the app defaults
@@ -99,23 +100,24 @@ int main()
             break;
     }
 
-    // wait some time to improve boot chance in CFWs
-    // we convert to microseconds here, since nanoseconds is too fast
-    // to be useful
-    svcSleepThread(app.config.delay * MS_TO_NS);
-
     // run application
     if (app.config.payload) {
         if (brahma_init()) {
-            if (!load_arm9_payload(app.config.path, 0x12000, 0)) goto error;
+            if (!load_arm9_payload(app.config.path, app.config.offset, 0))
+                goto error;
             firm_reboot();
             brahma_exit();
+            // sleep for some ms, to increase boot rate in CFWs
+            // to be reliable, it needs to wait right after the payload
+            // is loaded
+            svcSleepThread(app.config.delay);
             exit_services();
             return 0;
         } else {
             goto error;
         }
     } else {
+        svcSleepThread(app.config.delay);
         exit_services();
         return bootApp(app.config.path, &app.em);
     }
