@@ -11,7 +11,7 @@
 #include "misc.h"
 
 #define DEFAULT_BOOT "/boot_default.3dsx"
-#define DEFAULT_DELAY 100 /* ms */
+#define DEFAULT_DELAY 150 /* ms */
 #define DEFAULT_PAYLOAD 0 /* 0 - false; 1 - true */
 #define DEFAULT_OFFSET 0x12000
 #define INI_FILE "/boot_config.ini"

@@ -38,7 +38,7 @@ NO_SMDH		:=	1
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard
 
-CFLAGS	:=	-w -Os -mword-relocations \
+CFLAGS	:=	-g -Wall -Os -mword-relocations \
 			-fomit-frame-pointer -ffast-math \
 			$(ARCH)
 
