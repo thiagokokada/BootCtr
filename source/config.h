@@ -12,6 +12,7 @@ typedef struct
     char *key;
     char *path;
     unsigned long long delay;
+    char payload;
 } configuration;
 
 #define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0

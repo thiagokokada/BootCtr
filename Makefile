@@ -28,7 +28,7 @@ include $(DEVKITARM)/3ds_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source source/inih
+SOURCES		:=	source source/inih source/libcakebrah source/libcakebrah/libkhax
 DATA		:=	data
 INCLUDES	:=	include
 NO_SMDH		:=	1
@@ -38,7 +38,7 @@ NO_SMDH		:=	1
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard
 
-CFLAGS	:=	-g -Wall -O2 -mword-relocations \
+CFLAGS	:=	-w -Os -mword-relocations \
 			-fomit-frame-pointer -ffast-math \
 			$(ARCH)
 

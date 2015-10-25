@@ -1,7 +1,8 @@
+#include <3ds.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include <3ds.h>
+#include "libcakebrah/brahma.h"
 
 #include "filesystem.h"
 #include "boot.h"
@@ -11,6 +12,7 @@
 
 #define DEFAULT_BOOT "/boot_default.3dsx"
 #define DEFAULT_DELAY 100 /* ms */
+#define DEFAULT_PAYLOAD 0 /* 0 - false; 1 - true */
 #define INI_FILE "/boot_config.ini"
 #define MS_TO_NS 1000000ULL
 
@@ -32,15 +34,7 @@ void __appExit()
 
 int main()
 {
-    srvInit();
-    aptInit();
-    initFilesystem();
-    openSDArchive();
-    hidInit(NULL);
-    irrstInit(NULL);
-    acInit();
-    ptmInit();
-    amInit();
+    init_services();
 
     // offset potential issues caused by homebrew that just ran
     aptOpenSession();
@@ -50,7 +44,8 @@ int main()
     application app = {
         .config.key = "DEFAULT",
         .config.path = DEFAULT_BOOT,
-        .config.delay = DEFAULT_DELAY
+        .config.delay = DEFAULT_DELAY,
+        .config.payload = DEFAULT_PAYLOAD
     };
 
     // load default user configuration, overriding the app defaults
@@ -104,24 +99,29 @@ int main()
             break;
     }
 
-    scanExecutable2(&app.em, app.config.path);
-
-    // cleanup whatever we have to cleanup
-    amExit();
-    ptmExit();
-    acExit();
-    irrstExit();
-    hidExit();
-    closeSDArchive();
-    exitFilesystem();
-    aptExit();
-    srvExit();
-
     // wait some time to improve boot chance in CFWs
     // we convert to microseconds here, since nanoseconds is too fast
     // to be useful
     svcSleepThread(app.config.delay * MS_TO_NS);
 
     // run application
-    return bootApp(app.config.path, &app.em);
+    if (app.config.payload) {
+        if (brahma_init()) {
+            if (!load_arm9_payload(app.config.path, 0x12000, 0)) goto error;
+            firm_reboot();
+            brahma_exit();
+            exit_services();
+            return 0;
+        } else {
+            goto error;
+        }
+    } else {
+        exit_services();
+        return bootApp(app.config.path, &app.em);
+    }
+
+error:
+    exit_services();
+    print_error("Can't load file %s", app.config.path);
+    return 1;
 }

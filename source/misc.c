@@ -1,5 +1,31 @@
 #include "misc.h"
 
+void init_services()
+{
+    srvInit();
+    aptInit();
+    initFilesystem();
+    openSDArchive();
+    hidInit(NULL);
+    irrstInit(NULL);
+    acInit();
+    ptmInit();
+    amInit();
+}
+
+void exit_services()
+{
+    amExit();
+    ptmExit();
+    acExit();
+    irrstExit();
+    hidExit();
+    closeSDArchive();
+    exitFilesystem();
+    aptExit();
+    srvExit();
+}
+
 int file_exists(const char *fname)
 {
     FILE *file = fopen(fname, "r");
@@ -8,6 +34,14 @@ int file_exists(const char *fname)
         return 1;
     }
     return 0;
+}
+
+// http://stackoverflow.com/a/5309508
+const char *get_filename_ext(const char *filename)
+{
+    const char *dot = strrchr(filename, '.');
+    if (!dot || dot == filename) return "";
+    return dot + 1;
 }
 
 void reboot()
