@@ -32,7 +32,7 @@ allowing boot of up-to 12+1 homebrews (12 using keys plus 1 default). In N3DS,
 boot up-to 18+1.
 
 Compiling
----------------------------
+---------
 
 First, clone this repository including the submodules:
 
@@ -46,6 +46,32 @@ If devkitPro is correctly installed all you need to do is:
 And copy/rename the new ``HBL-Emergency.3dsx`` file to your SD card. Do not
 forget to copy ``boot_config.ini`` too.
 
+License
+-------
+
+The original source code ([Homebrew Launcher][1]) does not have a proper
+license, and since this code is derived from it I can't simple change the
+license for something that I would like. The ``README.md`` from HBL says:
+
+> "Feel free to use code from hbmenu for your own projects, so long as you
+give credit to its original authors."
+
+In the section below we give proper credits to everyone that helped creating
+this project. Of course, all of my modifications is distributed in a similar
+license, so go ahead and fork and do something interesting.
+
+Credits
+-------
+
+* @smealum and everyone that worked in the [Homebrew Launcher][1]
+* @mashers, for the original source code of [HBL-Emergency][2]
+* @Cpasjuste, for some ideas from his [CtrBootManager][4]
+* @benhoyt, for [inih][5]
+* @mid-kid and others, for [CakeBrah][6]
+
 [1]: https://github.com/smealum/3ds_hb_menu
 [2]: https://gbatemp.net/threads/release-homebrew-emergency-launcher.399394/
 [3]: http://devkitpro.org/
+[4]: https://github.com/Cpasjuste/CtrBootManager
+[5]: https://github.com/benhoyt/inih
+[6]: https://github.com/mid-kid/CakeBrah
