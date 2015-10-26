@@ -4,7 +4,6 @@
 #include <string.h>
 
 #include "boot.h"
-//#include "netloader.h"
 #include "filesystem.h"
 
 extern void (*__system_retAddr)(void);
@@ -66,22 +65,9 @@ int bootApp(char* executablePath, executableMetadata_s* em)
 	// set argv/argc
 	argbuffer[0] = 0;
 	argbuffer_length = 0x200*4;
-	// TEMP
-	// if(netloader_boot) {
-	// 	char *ptr = netloaded_commandline;
-	// 	char *dst = (char*)&argbuffer[1];
-	// 	while (ptr < netloaded_commandline + netloaded_cmdlen) {
-	// 		char *arg = ptr;
-	// 		strcpy(dst,ptr);
-	// 		ptr += strlen(arg) + 1;
-	// 		dst += strlen(arg) + 1;
-	// 		argbuffer[0]++;
-	// 	}
-	// }else{
-		argbuffer[0]=1;
-		snprintf((char*)&argbuffer[1], 0x200*4 - 4, "sdmc:%s", executablePath);
-		argbuffer_length = strlen((char*)&argbuffer[1]) + 4 + 1; // don't forget null terminator !
-	// }
+
+	argbuffer[0] = 1;
+	snprintf((char*)&argbuffer[1], 0x200*4 - 4, "sdmc:%s", executablePath);
 
 	// figure out the preferred way of running the 3dsx
 	if(!hbInit())
@@ -113,7 +99,7 @@ int bootApp(char* executablePath, executableMetadata_s* em)
 				getBestProcess_2x(em->sectionSizes, (bool*)em->servicesThatMatter, NUM_SERVICESTHATMATTER, out, 4, &out_len);
 
 				// temp : check if we got all the services we want
-				if(em->servicesThatMatter[0] <= out[0].capabilities[0] && em->servicesThatMatter[1] <= out[1].capabilities[1] && em->servicesThatMatter[2] <= out[2].capabilities[2] && em->servicesThatMatter[3] <= out[3].capabilities[3])
+				if(em->servicesThatMatter[0] <= out[0].capabilities[0] && em->servicesThatMatter[1] <= out[0].capabilities[1] && em->servicesThatMatter[2] <= out[0].capabilities[2] && em->servicesThatMatter[3] <= out[0].capabilities[3] && em->servicesThatMatter[4] <= out[0].capabilities[4])
 				{
 					targetProcessId = out[0].processId;
 				}else{

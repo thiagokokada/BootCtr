@@ -13,8 +13,7 @@ void boot_fix(int delay)
 int load_3dsx(application app)
 {
     scanExecutable2(&app.em, app.config.path);
-    gfxExit();
-    exit_services();
+    exit_services(false);
     return bootApp(app.config.path, &app.em);
 }
 
@@ -57,7 +56,7 @@ int load_payload(application app)
             print_error("Couldn't load ARM9 payload");
             return -1;
         }
-        exit_services();
+        exit_services(true);
         firm_reboot();
         brahma_exit();
         return 0;
@@ -70,7 +69,6 @@ int load_payload(application app)
 int load(application app)
 {
     boot_fix(app.config.delay);
-
     
     switch (app.config.payload) {
         case AUTO:

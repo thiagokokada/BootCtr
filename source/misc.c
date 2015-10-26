@@ -4,24 +4,21 @@ void init_services()
 {
     srvInit();
     aptInit();
+    gfxInitDefault();
     initFilesystem();
     openSDArchive();
-    gfxInitDefault();
-    hidInit(NULL);
-    irrstInit(NULL);
+    hidInit();
     acInit();
     ptmInit();
-    amInit();
 }
 
-void exit_services()
+void exit_services(bool payload)
 {
-    amExit();
     ptmExit();
     acExit();
-    irrstExit();
     hidExit();
-    // gfxExit(); // hangs brahma/libkhax
+    // hangs CakeBrah/libkhax
+    if (!payload) gfxExit();
     closeSDArchive();
     exitFilesystem();
     aptExit();
@@ -48,11 +45,10 @@ char *get_filename_ext(const char *filename)
 
 void reboot()
 {
-	aptInit();
 	aptOpenSession();
 	APT_HardwareResetAsync(NULL);
 	aptCloseSession();
-	aptExit();
+	exit_services(false);
 	exit(EXIT_SUCCESS);
 }
 

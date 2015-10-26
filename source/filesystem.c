@@ -69,5 +69,3 @@ bool fileExists(char* path, FS_archive* archive)
 
 	return true;
 }
-
-extern int debugValues[4];
