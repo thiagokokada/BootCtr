@@ -11,7 +11,7 @@
 #include "misc.h"
 
 #define DEFAULT_BOOT "/boot_default.3dsx"
-#define DEFAULT_DELAY 150 /* ms */
+#define DEFAULT_DELAY 150 * MS_TO_NS /* ms */
 #define DEFAULT_PAYLOAD 0 /* 0 - false; 1 - true */
 #define DEFAULT_OFFSET 0x12000
 #define INI_FILE "/boot_config.ini"
@@ -95,10 +95,6 @@ int main()
             break;
     }
 
-    // sleep for some ms, to increase boot rate in CFWs
-    // to be reliable, it needs to wait right after the payload
-    // is loaded
-    svcSleepThread(app.config.delay);
     print_debug("\n"
                 "key: %s\n"
                 "path: %s\n"
@@ -107,6 +103,11 @@ int main()
                 "offset: %x\n",
                 app.config.key, app.config.path, app.config.delay,
                 app.config.payload, app.config.offset);
+
+    // sleep for some ms, to increase boot rate in CFWs
+    // to be reliable, it needs to wait right after the payload
+    // is loaded
+    svcSleepThread(app.config.delay);
 
     // run application
     if (app.config.payload) {
@@ -121,12 +122,14 @@ int main()
             goto error;
         }
     } else {
+        gfxExit();
         exit_services();
         return bootApp(app.config.path, &app.em);
     }
 
 error:
     print_error("Can't load file %s", app.config.path);
+    gfxExit();
     exit_services();
     return 1;
 }

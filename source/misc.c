@@ -6,11 +6,13 @@ void init_services()
     aptInit();
     initFilesystem();
     openSDArchive();
+    gfxInitDefault();
     hidInit(NULL);
     irrstInit(NULL);
     acInit();
     ptmInit();
     amInit();
+    consoleInit(GFX_TOP, NULL);
 }
 
 void exit_services()
@@ -20,6 +22,7 @@ void exit_services()
     acExit();
     irrstExit();
     hidExit();
+    // gfxExit(); // hangs brahma/libkhax
     closeSDArchive();
     exitFilesystem();
     aptExit();
@@ -73,9 +76,6 @@ void print_debug(const char *msg, ...)
 	va_list args;
 	char fmt[512];
 
-	gfxInitDefault();
-	consoleInit(GFX_TOP, NULL);
-
 	va_start(args, msg);
 	vsprintf(fmt, msg, args);
 	va_end(args);
@@ -84,8 +84,6 @@ void print_debug(const char *msg, ...)
 	printf("Press START to continue...\n");
 
 	wait_key(KEY_START);
-
-	gfxExit();
 #endif
 }
 
@@ -93,9 +91,6 @@ void print_error(const char *msg, ...)
 {
 	va_list args;
 	char fmt[512];
-
-	gfxInitDefault();
-	consoleInit(GFX_TOP, NULL);
 
 	va_start(args, msg);
 	vsprintf(fmt, msg, args);
@@ -105,6 +100,4 @@ void print_error(const char *msg, ...)
 	printf("Press START to reboot...\n");
 
 	wait_key(KEY_START);
-
-	gfxExit();
 }

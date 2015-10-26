@@ -8,7 +8,7 @@
 
 #include "filesystem.h"
 
-#define DEBUG
+//#define DEBUG
 
 void init_services();
 void exit_services();
