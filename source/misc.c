@@ -40,9 +40,9 @@ int file_exists(const char *fname)
 }
 
 // http://stackoverflow.com/a/5309508
-const char *get_filename_ext(const char *filename)
+char *get_filename_ext(const char *filename)
 {
-    const char *dot = strrchr(filename, '.');
+    char *dot = strrchr(filename, '.');
     if (!dot || dot == filename) return "";
     return dot + 1;
 }
@@ -100,14 +100,4 @@ void print_error(const char *msg, ...)
 	printf("Press START to reboot...\n");
 
 	wait_key(KEY_START);
-}
-
-void boot_fix(int delay)
-{
-    for (;aptMainLoop() && delay > 0; --delay) {
-        //gfxClearColor((u8[]){0x00, 0x00, 0x00});
-	gfxFlushBuffers();
-	gfxSwapBuffers();
-	gspWaitForVBlank();
-    }
 }
