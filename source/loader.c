@@ -78,7 +78,7 @@ int load(application app)
             // http://stackoverflow.com/a/18496437
             ; char *ext = get_filename_ext(app.config.path);
             // convert to lower case
-            for (int i = 0; ext[i]; ++i) ext[i] = tolower(ext[i]);
+            for (int i = 0; ext[i]; ++i) ext[i] = tolower((unsigned char)ext[i]);
 
             if(!strncmp(ext, "bin", 3) || !strncmp(ext, "dat", 3)) {
                 return load_payload(app);
