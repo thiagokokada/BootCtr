@@ -12,7 +12,6 @@ void init_services()
     acInit();
     ptmInit();
     amInit();
-    consoleInit(GFX_TOP, NULL);
 }
 
 void exit_services()
@@ -80,6 +79,7 @@ void print_debug(const char *msg, ...)
 	vsprintf(fmt, msg, args);
 	va_end(args);
 
+	consoleInit(GFX_TOP, NULL);
 	printf("DEBUG: %s\n", fmt);
 	printf("Press START to continue...\n");
 
@@ -96,6 +96,7 @@ void print_error(const char *msg, ...)
 	vsprintf(fmt, msg, args);
 	va_end(args);
 
+	consoleInit(GFX_TOP, NULL);
 	printf("ERROR: %s\n", fmt);
 	printf("Press START to reboot...\n");
 
