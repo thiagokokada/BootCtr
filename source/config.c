@@ -6,8 +6,7 @@ int handler(void *user, const char *section, const char *name, const char *value
 	if (MATCH(pconfig->key, "path")) {
 		pconfig->path = strdup(value);
 	} else if (MATCH(pconfig->key, "delay")) {
-		// convert to ms here, since ns is too fast to be useful
-		pconfig->delay = strtoull(value, NULL, 10) * MS_TO_NS;
+		pconfig->delay = strtoul(value, NULL, 10);
 	} else if (MATCH(pconfig->key, "payload")) {
 		pconfig->payload = strtoul(value, NULL, 10);
 	} else if (MATCH(pconfig->key, "offset")) {

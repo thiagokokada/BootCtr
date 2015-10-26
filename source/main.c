@@ -11,7 +11,7 @@
 #include "misc.h"
 
 #define DEFAULT_BOOT "/boot_default.3dsx"
-#define DEFAULT_DELAY 150 * MS_TO_NS /* ms */
+#define DEFAULT_DELAY 150 /* ms */
 #define DEFAULT_PAYLOAD 0 /* 0 - false; 1 - true */
 #define DEFAULT_OFFSET 0x12000
 #define INI_FILE "/boot_config.ini"
@@ -107,18 +107,54 @@ int main()
     // sleep for some ms, to increase boot rate in CFWs
     // to be reliable, it needs to wait right after the payload
     // is loaded
-    svcSleepThread(app.config.delay);
+    boot_fix(app.config.delay);
 
     // run application
+    char err_msg[32] = "Unknown error";
     if (app.config.payload) {
-        if (brahma_init()) {
-            if (!load_arm9_payload(app.config.path, app.config.offset, 0))
+        // Memory for the arm9 payload
+        const u32 payload_size = 0x50000;
+        void *payload = malloc(payload_size);
+        if (!payload) {
+            snprintf(err_msg, sizeof(err_msg), "Couldn't allocate payload");
+            goto error;
+        }
+
+        int rc;
+        // Load the arm9 payload into memory
+        FILE *file = fopen(app.config.path, "r");
+        if (!file) {
+            snprintf(err_msg, sizeof(err_msg), "Couldn't open %s", app.config.path);
+            goto error;
+        }
+
+        if(app.config.offset > 0) {
+            rc = fseek(file, app.config.offset, SEEK_SET);
+            if (rc != 0) {
+                snprintf(err_msg, sizeof(err_msg), "Couldn't seek %s", app.config.path);
                 goto error;
+            }
+        }
+
+        fread(payload, payload_size, 1, file);
+        if (ferror(file) != 0) {
+            snprintf(err_msg, sizeof(err_msg), "Couldn't read %s", app.config.path);
+            goto error;
+        }
+        fclose(file);
+
+        if (brahma_init()) {
+            rc = load_arm9_payload_from_mem(payload, payload_size);
+            if (rc != 1) {
+                snprintf(err_msg, sizeof(err_msg), "Couldn't load ARM9 payload");
+                goto error;
+            }
             exit_services();
             firm_reboot();
             brahma_exit();
             return 0;
         } else {
+            snprintf(err_msg, sizeof(err_msg), "Couldn't init Brahma");
             goto error;
         }
     } else {
@@ -128,7 +164,7 @@ int main()
     }
 
 error:
-    print_error("Can't load file %s", app.config.path);
+    print_error("%s", err_msg);
     gfxExit();
     exit_services();
     return 1;

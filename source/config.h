@@ -5,15 +5,13 @@
 
 #include "inih/ini.h"
 
-#define MS_TO_NS 1000000ULL
-
 typedef struct
 {
     // "key" is the pressed key got in the main() function
     // "path" and "delay" are the results read from handler() function
     char *key;
     char *path;
-    unsigned long long delay;
+    unsigned int delay;
     unsigned char payload;
     unsigned long offset;
 } configuration;

@@ -18,3 +18,4 @@ void reboot();
 void wait_key(const u32 key);
 void print_debug(const char *msg, ...);
 void print_error(const char *msg, ...);
+void boot_fix(int delay);

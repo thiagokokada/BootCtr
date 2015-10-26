@@ -101,3 +101,13 @@ void print_error(const char *msg, ...)
 
 	wait_key(KEY_START);
 }
+
+void boot_fix(int delay)
+{
+    for (;aptMainLoop() && delay > 0; --delay) {
+        //gfxClearColor((u8[]){0x00, 0x00, 0x00});
+	gfxFlushBuffers();
+	gfxSwapBuffers();
+	gspWaitForVBlank();
+    }
+}
