@@ -99,6 +99,14 @@ int main()
     // to be reliable, it needs to wait right after the payload
     // is loaded
     svcSleepThread(app.config.delay);
+    print_debug("\n"
+                "key: %s\n"
+                "path: %s\n"
+                "delay: %llu\n"
+                "payload: %d\n"
+                "offset: %x\n",
+                app.config.key, app.config.path, app.config.delay,
+                app.config.payload, app.config.offset);
 
     // run application
     if (app.config.payload) {
