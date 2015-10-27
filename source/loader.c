@@ -20,8 +20,7 @@ int load_3dsx(application app)
 int load_payload(application app)
 {
     // Memory for the arm9 payload
-    const u32 payload_size = 0x50000;
-    void *payload = malloc(payload_size);
+    void *payload = malloc(PAYLOAD_SIZE);
     if (!payload) {
         print_error("Couldn't allocate payload");
         return -1;
@@ -43,7 +42,7 @@ int load_payload(application app)
         }
     }
 
-    fread(payload, payload_size, 1, file);
+    fread(payload, PAYLOAD_SIZE, 1, file);
     if (ferror(file) != 0) {
         print_error("Couldn't read %s", app.config.path);
         return -1;
@@ -51,7 +50,7 @@ int load_payload(application app)
     fclose(file);
 
     if (brahma_init()) {
-        rc = load_arm9_payload_from_mem(payload, payload_size);
+        rc = load_arm9_payload_from_mem(payload, PAYLOAD_SIZE);
         if (rc != 1) {
             print_error("Couldn't load ARM9 payload");
             return -1;
@@ -71,9 +70,7 @@ int load(application app)
     boot_fix(app.config.delay);
 
     if (app.config.payload < 0) {
-        // this ; is just to fix a quirk from C
-        // http://stackoverflow.com/a/18496437
-        ; char *ext = get_filename_ext(app.config.path);
+        char *ext = get_filename_ext(app.config.path);
         // convert to lower case
         for (int i = 0; ext[i]; ++i) ext[i] = tolower((unsigned char)ext[i]);
 
