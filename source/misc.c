@@ -29,8 +29,8 @@ int file_exists(const char *fname)
 {
     FILE *file = fopen(fname, "r");
     if (file) {
-        fclose(file);
-        return 1;
+	fclose(file);
+	return 1;
     }
     return 0;
 }
@@ -43,58 +43,64 @@ char *get_filename_ext(const char *filename)
     return dot + 1;
 }
 
+void strtolower(char *str)
+{
+    for (int i = 0; str[i]; ++i)
+	str[i] = tolower((unsigned char)str[i]);
+}
+
 void reboot()
 {
-	aptOpenSession();
-	APT_HardwareResetAsync(NULL);
-	aptCloseSession();
-	exit_services(false);
-	exit(EXIT_SUCCESS);
+    aptOpenSession();
+    APT_HardwareResetAsync(NULL);
+    aptCloseSession();
+    exit_services(false);
+    exit(EXIT_SUCCESS);
 }
 
 void wait_key(const u32 key)
 {
-	while (aptMainLoop()) {
-		hidScanInput();
-		if (hidKeysDown() & key) break;
+    while (aptMainLoop()) {
+	hidScanInput();
+	if (hidKeysDown() & key) break;
 
-		gfxFlushBuffers();
-		gfxSwapBuffers();
+	gfxFlushBuffers();
+	gfxSwapBuffers();
 
-		gspWaitForVBlank();
-	}
+	gspWaitForVBlank();
+    }
 }
 
 void print_debug(const char *msg, ...)
 {
 #ifdef DEBUG
-	va_list args;
-	char fmt[512];
+    va_list args;
+    char fmt[512];
 
-	va_start(args, msg);
-	vsprintf(fmt, msg, args);
-	va_end(args);
+    va_start(args, msg);
+    vsprintf(fmt, msg, args);
+    va_end(args);
 
-	consoleInit(GFX_TOP, NULL);
-	printf("DEBUG: %s\n", fmt);
-	printf("Press START to continue...\n");
+    consoleInit(GFX_TOP, NULL);
+    printf("DEBUG: %s\n", fmt);
+    printf("Press START to continue...\n");
 
-	wait_key(KEY_START);
+    wait_key(KEY_START);
 #endif
 }
 
 void print_error(const char *msg, ...)
 {
-	va_list args;
-	char fmt[512];
+    va_list args;
+    char fmt[512];
 
-	va_start(args, msg);
-	vsprintf(fmt, msg, args);
-	va_end(args);
+    va_start(args, msg);
+    vsprintf(fmt, msg, args);
+    va_end(args);
 
-	consoleInit(GFX_TOP, NULL);
-	printf("ERROR: %s\n", fmt);
-	printf("Press START to reboot...\n");
+    consoleInit(GFX_TOP, NULL);
+    printf("ERROR: %s\n", fmt);
+    printf("Press START to reboot...\n");
 
-	wait_key(KEY_START);
+    wait_key(KEY_START);
 }

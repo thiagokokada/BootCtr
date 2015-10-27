@@ -1,7 +1,6 @@
 #pragma once
 
 #include <3ds.h>
-#include <ctype.h>
 
 #include "boot.h"
 #include "scanner.h"
