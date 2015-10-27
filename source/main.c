@@ -9,7 +9,7 @@
 
 #define DEFAULT_BOOT "/boot_default.3dsx"
 #define DEFAULT_DELAY 150 /* ms */
-#define DEFAULT_PAYLOAD AUTO
+#define DEFAULT_PAYLOAD -1 /* <0 - auto, 0 - disable, >0 - enabled */
 #define DEFAULT_OFFSET 0x12000
 #define INI_FILE "/boot_config.ini"
 
@@ -40,6 +40,11 @@ int main()
         .config.payload = DEFAULT_PAYLOAD,
         .config.offset = DEFAULT_OFFSET
     };
+
+    // load default user configuration, overriding the app defaults
+    // the handler only change the "config" variable if it finds a valid
+    // configuration, so even without error checking it should be safe
+    ini_parse(INI_FILE, handler, &app.config);
 
     hidScanInput();
     u32 key = hidKeysDown();

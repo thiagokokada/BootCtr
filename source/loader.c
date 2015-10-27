@@ -69,33 +69,25 @@ int load_payload(application app)
 int load(application app)
 {
     boot_fix(app.config.delay);
-    
-    switch (app.config.payload) {
-        case AUTO:
-            // this ; is just to fix a quirk from C
-            // http://stackoverflow.com/a/18496437
-            ; char *ext = get_filename_ext(app.config.path);
-            // convert to lower case
-            for (int i = 0; ext[i]; ++i) ext[i] = tolower((unsigned char)ext[i]);
 
-            if(!strncmp(ext, "bin", 3) || !strncmp(ext, "dat", 3)) {
-                return load_payload(app);
-            } else if(!strncmp(ext, "3dsx", 4)) {
-                return load_3dsx(app);
-            } else {
-                print_error("Invalid file: %s\n", app.config.path);
-                return 1;
-            }
-            break;
-        case FALSE:
-            return load_3dsx(app);
-            break;
-        case TRUE:
+    if (app.config.payload < 0) {
+        // this ; is just to fix a quirk from C
+        // http://stackoverflow.com/a/18496437
+        ; char *ext = get_filename_ext(app.config.path);
+        // convert to lower case
+        for (int i = 0; ext[i]; ++i) ext[i] = tolower((unsigned char)ext[i]);
+
+        if(!strncmp(ext, "bin", 3) || !strncmp(ext, "dat", 3)) {
             return load_payload(app);
-            break;
-        default:
-            print_error("Invalid payload value %d", app.config.payload);
+        } else if(!strncmp(ext, "3dsx", 4)) {
+            return load_3dsx(app);
+        } else {
+            print_error("Invalid file: %s\n", app.config.path);
             return 1;
-            break;
+        }
+    } else if (app.config.payload > 0) {
+        return load_payload(app);
+    } else {
+        return load_3dsx(app);
     }
 }

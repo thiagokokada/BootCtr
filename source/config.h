@@ -5,19 +5,13 @@
 
 #include "inih/ini.h"
 
-typedef enum {
-    AUTO = -1,
-    FALSE = 0,
-    TRUE = 1
-} payload_type;
-
 typedef struct {
     // "key" is the pressed key got in the main() function
     // "path" and "delay" are the results read from handler() function
     char *key;
     char *path;
     unsigned int delay;
-    payload_type payload;
+    int payload;
     unsigned long offset;
 } configuration;
 
