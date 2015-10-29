@@ -55,7 +55,7 @@ void reboot()
     APT_HardwareResetAsync(NULL);
     aptCloseSession();
     exit_services(false);
-    exit(EXIT_SUCCESS);
+    exit(EXIT_FAILURE);
 }
 
 void wait_key(const u32 key)
@@ -103,4 +103,6 @@ void print_error(const char *msg, ...)
     printf("Press START to reboot...\n");
 
     wait_key(KEY_START);
+
+    reboot();
 }

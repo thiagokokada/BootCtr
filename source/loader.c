@@ -19,50 +19,71 @@ int load_3dsx(application app)
 
 int load_payload(application app)
 {
+    char error_msg[512];
+    int rc;
+    s32 fsize;
+    s32 psize;
+
     // Memory for the arm9 payload
     void *payload = malloc(PAYLOAD_SIZE);
     if (!payload) {
-        print_error("Couldn't allocate payload");
-        return -1;
+        sprintf(error_msg, "Couldn't allocate payload");
+        goto error;
     }
 
-    int rc;
-    // Load the arm9 payload into memory
+    // Open payload file
     FILE *file = fopen(app.config.path, "r");
     if (!file) {
-        print_error("Couldn't open %s", app.config.path);
-        return -1;
+        sprintf(error_msg, "Couldn't open %s", app.config.path);
+        goto error;
     }
 
-    if(app.config.offset > 0) {
-        rc = fseek(file, app.config.offset, SEEK_SET);
-        if (rc != 0) {
-            print_error("Couldn't seek %s", app.config.path);
-            return -1;
-        }
+    // Get file and payload size
+    rc = fseek(file, 0L, SEEK_END);
+    fsize = ftell(file);
+    psize = fsize - app.config.offset;
+    if (psize <= 8) {
+        sprintf(error_msg, "Payload %s has invalid size", app.config.path);
+        goto error;
+    }
+    if (psize > PAYLOAD_SIZE) psize = PAYLOAD_SIZE;
+
+    // Load the arm9 payload into memory
+    rc = fseek(file, app.config.offset, SEEK_SET);
+    if (rc != 0) {
+        sprintf(error_msg, "Couldn't seek %s", app.config.path);
+        goto error;
     }
 
-    fread(payload, PAYLOAD_SIZE, 1, file);
+    fread(payload, psize, 1, file);
     if (ferror(file) != 0) {
-        print_error("Couldn't read %s", app.config.path);
-        return -1;
+        sprintf(error_msg, "Couldn't read %s", app.config.path);
+        goto error;
     }
     fclose(file);
 
+    // Put payload in proper place and tries to load it
     if (brahma_init()) {
-        rc = load_arm9_payload_from_mem(payload, PAYLOAD_SIZE);
+        rc = load_arm9_payload_from_mem(payload, psize);
         if (rc != 1) {
-            print_error("Couldn't load ARM9 payload");
-            return -1;
+            sprintf(error_msg, "Couldn't load ARM9 payload");
+            goto error;
         }
+        free(payload);
         exit_services(true);
         firm_reboot();
         brahma_exit();
-        return 0;
     } else {
-        print_error("Couldn't init Brahma");
-        return -1;
+        sprintf(error_msg, "Couldn't init Brahma");
+        goto error;
     }
+    return 0;
+
+error:
+    free(payload);
+    exit_services(false);
+    print_error(error_msg);
+    return -1;
 }
 
 int load(application app)
