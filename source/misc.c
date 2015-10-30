@@ -74,16 +74,16 @@ void wait_key(const u32 key)
 void print_debug(const char *msg, ...)
 {
 #ifdef DEBUG
-    va_list args;
-    char fmt[512];
+    consoleInit(GFX_TOP, NULL);
 
+    printf("DEBUG: ");
+
+    va_list args;
     va_start(args, msg);
-    vsprintf(fmt, msg, args);
+    vprintf(msg, args);
     va_end(args);
 
-    consoleInit(GFX_TOP, NULL);
-    printf("DEBUG: %s\n", fmt);
-    printf("Press START to continue...\n");
+    printf("\nPress START to continue...\n");
 
     wait_key(KEY_START);
 #endif
@@ -91,16 +91,16 @@ void print_debug(const char *msg, ...)
 
 void print_error(const char *msg, ...)
 {
-    va_list args;
-    char fmt[512];
+    consoleInit(GFX_TOP, NULL);
 
+    printf("ERROR: ");
+
+    va_list args;
     va_start(args, msg);
-    vsprintf(fmt, msg, args);
+    vprintf(msg, args);
     va_end(args);
 
-    consoleInit(GFX_TOP, NULL);
-    printf("ERROR: %s\n", fmt);
-    printf("Press START to reboot...\n");
+    printf("\nPress START to reboot...\n");
 
     wait_key(KEY_START);
 
