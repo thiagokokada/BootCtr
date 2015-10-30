@@ -27,12 +27,7 @@ void exit_services(bool payload)
 
 int file_exists(const char *fname)
 {
-    FILE *file = fopen(fname, "r");
-    if (file) {
-	fclose(file);
-	return 1;
-    }
-    return 0;
+    return access(fname, F_OK) == 0;
 }
 
 // http://stackoverflow.com/a/5309508
