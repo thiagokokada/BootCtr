@@ -6,6 +6,17 @@ from [mashers][2], This version removed some unused code used by Homebrew
 Launcher that isn't necessary in a simple bootloader, and added some
 interesting new features.
 
+Features
+--------
+
+* Supports both ``.3dsx`` files and binary payloads (for example,
+``/rxTools/sys/code.bin``, ``/Cakes.dat``, etc.).
+* Supports advanced features in ``.3dsx`` files, like network support.
+* Boot delay, to increase the boot rate chance of CFWs like rxTools and
+CakesFW.
+* Allows up-to 12+1 (12 using keys plus 1 default) homebrews in O3DS, up-to
+18+1 homebrews in N3DS.
+
 Installation
 ------------
 
