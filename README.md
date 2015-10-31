@@ -1,50 +1,42 @@
-Homebrew Launcher emergency boot
-================================
-
-By mashers at GBATemp, modified by m45t3r
------------------------------------------
+BootCtr - A simple boot manager for 3DS
+=======================================
 
 Based on 3DS Homebrew Launcher code by [Smealum][1]. The original version is
-from [mashers][2], I simply removed some unused code used by Homebrew Launcher
-that isn't necessary in a simple bootloader.
+from [mashers][2], This version removed some unused code used by Homebrew
+Launcher that isn't necessary in a simple bootloader, and added some
+interesting new features.
 
-Installation:
--------------
+Installation
+------------
 
-* Rename the ``boot.3dsx`` file already on your SD card to ``boot_default.3dsx``.
-* Place some other launcher or FTP client in the root of your SD card and call
-it ``boot_1.3dsx``.
-* Rename ``HBL-Emergency.3dsx`` to ``boot.3dsx``, copy this file and
+* (Optional, but recommended) Install [HomeMenuHax][7] and set up autoboot.
+* Modify, according to your needs, the included ``boot_config.ini`` file.
+* Rename ``BootCtr.3dsx`` to ``boot.3dsx``, copy both ``boot.3dsx`` and
 ``boot_config.ini`` to the root of your SD card.
-* Change ``boot_config.ini`` according to your necessities.
 
 Usage
 -----
 
 * Boot up your homebrew hax as usual.
-* If you do nothing, then ``boot_default.3dsx`` will be launched (your normal
-* launcher).
-* If something goes wrong with your launcher, hold down the right shoulder (R)
-button while launching your homebrew hax. This will cause ``boot_1.3dsx`` to be
-booted instead.
-* You may change the behavior using the included ``boot_config.ini`` file,
-allowing boot of up-to 12+1 homebrews (12 using keys plus 1 default). In N3DS,
-boot up-to 18+1.
+* If you do nothing, then ``boot_default.3dsx`` (or anything that you setup in
+[DEFAULT] section) will be launched.
+* If you want to load an alternative launcher, hold down a button (configured
+according your ``boot_config.ini``) to boot it.
 
 Compiling
 ---------
 
 First, clone this repository including the submodules:
 
-    $ git clone --recursive https://github.com/m45t3r/HBL-Emergency.git
+    $ git clone --recursive https://github.com/m45t3r/BootCtr.git
 
 Compile a new binary using the included ``Makefile`` and [devkitPro][3].
 If devkitPro is correctly installed all you need to do is:
 
     $ make
 
-And copy/rename the new ``HBL-Emergency.3dsx`` file to your SD card. Do not
-forget to copy ``boot_config.ini`` too.
+And copy/rename the new ``BootCtr.3dsx`` file to your SD card. Do not forget
+to copy ``boot_config.ini`` too.
 
 License
 -------
@@ -75,3 +67,4 @@ Credits
 [4]: https://github.com/Cpasjuste/CtrBootManager
 [5]: https://github.com/benhoyt/inih
 [6]: https://github.com/mid-kid/CakeBrah
+[7]: https://github.com/yellows8/3ds_homemenuhax
