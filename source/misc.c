@@ -1,6 +1,6 @@
 #include "misc.h"
 
-void init_services()
+void init_services(void)
 {
     srvInit();
     aptInit();
@@ -44,7 +44,7 @@ void strtolower(char *str)
 	str[i] = tolower((unsigned char)str[i]);
 }
 
-void reboot()
+void reboot(void)
 {
     aptOpenSession();
     APT_HardwareResetAsync(NULL);

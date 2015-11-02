@@ -18,13 +18,13 @@ void exitFilesystem(void)
 	fsExit();
 }
 
-void openSDArchive()
+void openSDArchive(void)
 {
 	sdmcArchive=(FS_archive){0x00000009, (FS_path){PATH_EMPTY, 1, (u8*)""}};
 	FSUSER_OpenArchive(NULL, &sdmcArchive);
 }
 
-void closeSDArchive()
+void closeSDArchive(void)
 {
 	FSUSER_CloseArchive(NULL, &sdmcArchive);
 }

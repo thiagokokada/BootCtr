@@ -8,8 +8,8 @@ extern FS_archive sdmcArchive;
 void initFilesystem(void);
 void exitFilesystem(void);
 
-void openSDArchive();
-void closeSDArchive();
+void openSDArchive(void);
+void closeSDArchive(void);
 
 //general fs stuff
 int loadFile(char* path, void* dst, FS_archive* archive, u64 maxSize);
