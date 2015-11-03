@@ -36,20 +36,18 @@ NO_SMDH		:=	1
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
-ARCH	:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard
+ARCH		:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard
 
-CFLAGS	:=	-g -std=gnu11 -Wall -Os -mword-relocations \
-			-fomit-frame-pointer -ffast-math \
-			$(ARCH)
+COMMONFLAGS	:=	-g -Wall -Os -mword-relocations -fomit-frame-pointer \
+			-ffast-math -DARM11 -D_3DS
+CFLAGS		:=	$(COMMONFLAGS) $(ARCH) $(INCLUDE) -std=gnu11
+CXXFLAGS	:=	$(COMMONFLAGS) $(ARCH) $(INCLUDE) -std=gnu++11 \
+			-fno-rtti -fno-exceptions
 
-CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS
+ASFLAGS		:=	-g $(ARCH)
+LDFLAGS		:=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
-
-ASFLAGS	:=	-g $(ARCH)
-LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
-
-LIBS	:= -lctru
+LIBS		:= 	-lctru
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
