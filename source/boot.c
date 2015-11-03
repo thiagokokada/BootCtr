@@ -123,7 +123,7 @@ int bootApp(char* executablePath, executableMetadata_s* em)
                     int best_sum = 0;
                     for(int i = 0; i < out_len; i++) {
                         int sum = 0;
-                        for(int j=0; j<NUM_SERVICESTHATMATTER; j++) {
+                        for(int j = 0; j < NUM_SERVICESTHATMATTER; j++) {
                             sum += (em->servicesThatMatter[j] == 1) &&
                                 out[i].capabilities[j];
                         }
