@@ -6,9 +6,9 @@
 
 typedef struct
 {
-	u8 mediatype;
-	u64 title_id;
-}titleInfo_s;
+    u8 mediatype;
+    u64 title_id;
+} titleInfo_s;
 
 extern int targetProcessId;
 extern titleInfo_s target_title;

@@ -18,128 +18,128 @@ void (*setArgs_1x)(u32* src, u32 length);
 
 static void launchFile_1x(void)
 {
-	// jump to bootloader
-	callBootloader_1x(0x00000000, hbFileHandle);
+    // jump to bootloader
+    callBootloader_1x(0x00000000, hbFileHandle);
 }
 
 // ninjhax 2.0+
 typedef struct
 {
-	int processId;
-	bool capabilities[0x10];
+    int processId;
+    bool capabilities[0x10];
 } processEntry_s;
 
 void (*callBootloader_2x)
-	(Handle file, u32* argbuf, u32 arglength) = (void*)0x00100000;
+    (Handle file, u32* argbuf, u32 arglength) = (void*)0x00100000;
 void (*callBootloaderNewProcess_2x)
-	(int processId, u32* argbuf, u32 arglength) = (void*)0x00100008;
+    (int processId, u32* argbuf, u32 arglength) = (void*)0x00100008;
 void (*callBootloaderRunTitle_2x)
-	(u8 mediatype, u32* argbuf, u32 argbuflength,
-	 u32 tid_low, u32 tid_high) = (void*)0x00100010;
+    (u8 mediatype, u32* argbuf, u32 argbuflength,
+     u32 tid_low, u32 tid_high) = (void*)0x00100010;
 void (*getBestProcess_2x)
-	(u32 sectionSizes[3], bool* requirements, int num_requirements,
-	 processEntry_s* out, int out_size, int* out_len) = (void*)0x0010000C;
+    (u32 sectionSizes[3], bool* requirements, int num_requirements,
+     processEntry_s* out, int out_size, int* out_len) = (void*)0x0010000C;
 
 int targetProcessId = -1;
 titleInfo_s target_title;
 
 static void launchFile_2x(void)
 {
-	// jump to bootloader
-	if (targetProcessId == -1) {
-		callBootloader_2x(hbFileHandle, argbuffer, argbuffer_length);
-	} else if (targetProcessId == -2) {
-		callBootloaderRunTitle_2x(target_title.mediatype, argbuffer,
-				argbuffer_length, target_title.title_id & 0xffffffff,
-				(target_title.title_id >> 32) & 0xffffffff);
-	} else {
-		callBootloaderNewProcess_2x(targetProcessId, argbuffer, argbuffer_length);
-	}
+    // jump to bootloader
+    if (targetProcessId == -1) {
+        callBootloader_2x(hbFileHandle, argbuffer, argbuffer_length);
+    } else if (targetProcessId == -2) {
+        callBootloaderRunTitle_2x(target_title.mediatype, argbuffer,
+                argbuffer_length, target_title.title_id & 0xffffffff,
+                (target_title.title_id >> 32) & 0xffffffff);
+    } else {
+        callBootloaderNewProcess_2x(targetProcessId, argbuffer, argbuffer_length);
+    }
 }
 
 bool isNinjhax2(void)
 {
-	Result ret = hbInit();
-	if (!ret) {
-		hbExit();
-		return false;
-	} else {
-		return true;
-	}
+    Result ret = hbInit();
+    if (!ret) {
+        hbExit();
+        return false;
+    } else {
+        return true;
+    }
 }
 
 int bootApp(char* executablePath, executableMetadata_s* em)
 {
-	// open file that we're going to boot up
-	fsInit();
-	FSUSER_OpenFileDirectly(NULL, &hbFileHandle, sdmcArchive,
-			FS_makePath(PATH_CHAR, executablePath),
-			FS_OPEN_READ, FS_ATTRIBUTE_NONE);
-	fsExit();
+    // open file that we're going to boot up
+    fsInit();
+    FSUSER_OpenFileDirectly(NULL, &hbFileHandle, sdmcArchive,
+            FS_makePath(PATH_CHAR, executablePath),
+            FS_OPEN_READ, FS_ATTRIBUTE_NONE);
+    fsExit();
 
-	// set argv/argc
-	argbuffer[0] = 0;
-	argbuffer_length = 0x200*4;
-	argbuffer[0] = 1;
-	snprintf((char*)&argbuffer[1], 0x200*4 - 4, "sdmc:%s", executablePath);
+    // set argv/argc
+    argbuffer[0] = 0;
+    argbuffer_length = 0x200*4;
+    argbuffer[0] = 1;
+    snprintf((char*)&argbuffer[1], 0x200*4 - 4, "sdmc:%s", executablePath);
 
-	// figure out the preferred way of running the 3dsx
-	if(!hbInit()) {
-		// ninjhax 1.x !
-		// grab bootloader addresses
-		HB_GetBootloaderAddresses((void**)&callBootloader_1x, (void**)&setArgs_1x);
-		hbExit();
-		// set argv
-		setArgs_1x(argbuffer, 0x200*4);
-		// override return address to homebrew booting code
-		__system_retAddr = launchFile_1x;
-	} else {
-		// ninjhax 2.0+
-		// override return address to homebrew booting code
-		__system_retAddr = launchFile_2x;
+    // figure out the preferred way of running the 3dsx
+    if(!hbInit()) {
+        // ninjhax 1.x !
+        // grab bootloader addresses
+        HB_GetBootloaderAddresses((void**)&callBootloader_1x, (void**)&setArgs_1x);
+        hbExit();
+        // set argv
+        setArgs_1x(argbuffer, 0x200*4);
+        // override return address to homebrew booting code
+        __system_retAddr = launchFile_1x;
+    } else {
+        // ninjhax 2.0+
+        // override return address to homebrew booting code
+        __system_retAddr = launchFile_2x;
 
-		if(em) {
-			if(em->scanned && targetProcessId == -1) {
-				// this is a really shitty implementation of what we should be
-				// doing i'm really too lazy to do any better right now, but a
-				// good solution will come (some day)
-				processEntry_s out[4];
-				int out_len = 0;
-				getBestProcess_2x(em->sectionSizes, (bool*)em->servicesThatMatter,
-						NUM_SERVICESTHATMATTER, out, 4, &out_len);
+        if(em) {
+            if(em->scanned && targetProcessId == -1) {
+                // this is a really shitty implementation of what we should be
+                // doing i'm really too lazy to do any better right now, but a
+                // good solution will come (some day)
+                processEntry_s out[4];
+                int out_len = 0;
+                getBestProcess_2x(em->sectionSizes, (bool*)em->servicesThatMatter,
+                        NUM_SERVICESTHATMATTER, out, 4, &out_len);
 
-				// temp : check if we got all the services we want
-				if (em->servicesThatMatter[0] <= out[0].capabilities[0] &&
-						em->servicesThatMatter[1] <= out[0].capabilities[1] &&
-						em->servicesThatMatter[2] <= out[0].capabilities[2] &&
-						em->servicesThatMatter[3] <= out[0].capabilities[3] &&
-						em->servicesThatMatter[4] <= out[0].capabilities[4]) {
-					targetProcessId = out[0].processId;
-				} else {
-					// temp : if we didn't get everything we wanted, we search
-					// for the candidate that has as many highest-priority
-					// services as possible
-					int best_id = 0;
-					int best_sum = 0;
-					for(int i = 0; i < out_len; i++) {
-						int sum = 0;
-						for(int j=0; j<NUM_SERVICESTHATMATTER; j++) {
-							sum += (em->servicesThatMatter[j] == 1) &&
-								out[i].capabilities[j];
-						}
-						if(sum > best_sum) {
-							best_id = i;
-							best_sum = sum;
-						}
-					}
-					targetProcessId = out[best_id].processId;
-				}
+                // temp : check if we got all the services we want
+                if (em->servicesThatMatter[0] <= out[0].capabilities[0] &&
+                    em->servicesThatMatter[1] <= out[0].capabilities[1] &&
+                    em->servicesThatMatter[2] <= out[0].capabilities[2] &&
+                    em->servicesThatMatter[3] <= out[0].capabilities[3] &&
+                    em->servicesThatMatter[4] <= out[0].capabilities[4]) {
+                    targetProcessId = out[0].processId;
+                } else {
+                    // temp : if we didn't get everything we wanted, we search
+                    // for the candidate that has as many highest-priority
+                    // services as possible
+                    int best_id = 0;
+                    int best_sum = 0;
+                    for(int i = 0; i < out_len; i++) {
+                        int sum = 0;
+                        for(int j=0; j<NUM_SERVICESTHATMATTER; j++) {
+                            sum += (em->servicesThatMatter[j] == 1) &&
+                                out[i].capabilities[j];
+                        }
+                        if(sum > best_sum) {
+                            best_id = i;
+                            best_sum = sum;
+                        }
+                    }
+                    targetProcessId = out[best_id].processId;
+                }
 
-			} else if (targetProcessId != -1) {
-				targetProcessId = -2;
-			} // end if(em->scanned && targetProcessId == -1)
-		} // end if(em)
-	} // end else
+            } else if (targetProcessId != -1) {
+                targetProcessId = -2;
+            } // end if(em->scanned && targetProcessId == -1)
+        } // end if(em)
+    } // end else
 
-	return 0;
+    return 0;
 }
