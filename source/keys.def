@@ -24,3 +24,4 @@ KEY(CSTICK_DOWN)
 // Disabled, not actually provided by HID
 // KEY(TOUCH)
 #undef KEY
+// vim: filetype=c
