@@ -81,11 +81,12 @@ Result scan3dsx(char* path, char** patterns, int num_patterns,
 
             int patternsCount[num_patterns];
             for (int j = 0; j < num_patterns; j++) patternsCount[j] = 0;
+
             for (int i = 0; i < elements + max_pattern_size; i++) {
                 const char v = buffer[i];
                 for (int j = 0; j < num_patterns; j++) {
                     if(!patternsFound[j]) {
-                        if(v == patterns[j][patternsCount[j]]) {
+                        if (v == patterns[j][patternsCount[j]]) {
                             patternsCount[j]++;
                         } else if (v == patterns[j][0]) {
                             patternsCount[j] = 1;
@@ -93,7 +94,7 @@ Result scan3dsx(char* path, char** patterns, int num_patterns,
                             patternsCount[j] = 0;
                         }
 
-                        if(patterns[j][patternsCount[j]] == 0x00) {
+                        if (patterns[j][patternsCount[j]] == 0x00) {
                             patternsFound[j] = true;
                         }
                     }
@@ -101,7 +102,7 @@ Result scan3dsx(char* path, char** patterns, int num_patterns,
             } // end for
             memcpy(buffer, &buffer[buffer_size], max_pattern_size);
             total_scanned += elements;
-        } while(elements == buffer_size && total_scanned < hdr.rodataSegSize);
+        } while (elements == buffer_size && total_scanned < (int)hdr.rodataSegSize);
     }
 
 end:

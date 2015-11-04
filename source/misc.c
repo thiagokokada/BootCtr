@@ -68,7 +68,9 @@ void wait_key(const u32 key)
 
 void print_debug(const char *msg, ...)
 {
-#ifdef DEBUG
+#ifndef DEBUG
+    (void)msg;
+#else
     consoleInit(GFX_TOP, NULL);
 
     printf("DEBUG: ");

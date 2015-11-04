@@ -38,7 +38,7 @@ NO_SMDH		:=	1
 #---------------------------------------------------------------------------------
 ARCH		:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard
 
-COMMONFLAGS	:=	-g -Wall -Os -mword-relocations -fomit-frame-pointer \
+COMMONFLAGS	:=	-g -Wall -Wextra -Os -mword-relocations -fomit-frame-pointer \
 			-ffast-math -DARM11 -D_3DS
 CFLAGS		:=	$(COMMONFLAGS) $(ARCH) $(INCLUDE) -std=gnu11
 CXXFLAGS	:=	$(COMMONFLAGS) $(ARCH) $(INCLUDE) -std=gnu++11 \

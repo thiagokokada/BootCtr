@@ -20,7 +20,7 @@ void exitFilesystem(void)
 
 void openSDArchive(void)
 {
-    sdmcArchive = (FS_archive){0x00000009, (FS_path){PATH_EMPTY, 1, (u8*)""}};
+    sdmcArchive = (FS_archive){0x00000009, (FS_path){PATH_EMPTY, 1, (u8*)""}, 0, 0};
     FSUSER_OpenArchive(NULL, &sdmcArchive);
 }
 

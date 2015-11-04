@@ -34,11 +34,13 @@ int main()
     aptCloseSession();
 
     application app = {
-        .config.key = "DEFAULT",
-        .config.path = DEFAULT_BOOT,
-        .config.delay = DEFAULT_DELAY,
-        .config.payload = DEFAULT_PAYLOAD,
-        .config.offset = DEFAULT_OFFSET
+        .config = {
+            .key = "DEFAULT",
+            .path = DEFAULT_BOOT,
+            .delay = DEFAULT_DELAY,
+            .payload = DEFAULT_PAYLOAD,
+            .offset = DEFAULT_OFFSET
+        }
     };
 
     // load default user configuration, overriding the app defaults
