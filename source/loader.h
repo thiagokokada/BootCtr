@@ -8,7 +8,7 @@
 #include "misc.h"
 #include "libcakebrah/brahma.h"
 
-#define PAYLOAD_SIZE 0x10000
+#define PAYLOAD_MAX_SIZE 0x10000
 
 typedef struct {
     configuration config;

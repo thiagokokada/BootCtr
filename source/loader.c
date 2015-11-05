@@ -20,73 +20,28 @@ int load_3dsx(application app)
 int load_payload(application app)
 {
 #define BUF 512
-    
     char error_msg[BUF];
-    int rc;
-    s32 fsize;
-    s32 psize;
 
-    // Memory for the arm9 payload
-    void *payload = malloc(PAYLOAD_SIZE);
-    if (!payload) {
-        snprintf(error_msg, BUF, "Couldn't allocate payload");
-        goto error;
-    }
-
-    // Open payload file
-    FILE *file = fopen(app.config.path, "r");
-    if (!file) {
-        snprintf(error_msg, BUF, "Couldn't open %s", app.config.path);
-        goto error;
-    }
-
-    // Get file and payload size
-    rc = fseek(file, 0L, SEEK_END);
-    fsize = ftell(file);
-    psize = fsize - app.config.offset;
-    if (psize <= 8) {
-        snprintf(error_msg, BUF, "Payload %s has invalid size", app.config.path);
-        goto error;
-    }
-    if (psize > PAYLOAD_SIZE) psize = PAYLOAD_SIZE;
-
-    // Load the arm9 payload into memory
-    rc = fseek(file, app.config.offset, SEEK_SET);
-    if (rc != 0) {
-        snprintf(error_msg, BUF, "Couldn't seek %s", app.config.path);
-        goto error;
-    }
-
-    fread(payload, psize, 1, file);
-    if (ferror(file) != 0) {
-        snprintf(error_msg, BUF, "Couldn't read %s", app.config.path);
-        goto error;
-    }
-    fclose(file);
-
-    // Put payload in proper place and tries to load it
     if (brahma_init()) {
-        rc = load_arm9_payload_from_mem(payload, psize);
-        if (rc != 1) {
-            snprintf(error_msg, BUF, "Couldn't load ARM9 payload");
+        int result = load_arm9_payload(app.config.path,
+                app.config.offset, PAYLOAD_MAX_SIZE);
+        if (result != 1) {
+            snprintf(error_msg, BUF, "Couldn't load %s payload", app.config.path);
             goto error;
         }
-        free(payload);
         exit_services(true);
         firm_reboot();
         brahma_exit();
     } else {
-        snprintf(error_msg, BUF, "Couldn't init Brahma");
+        snprintf(error_msg, BUF, "Couldn't init Brahma loader");
         goto error;
     }
     return 0;
 
 error:
-    free(payload);
     exit_services(false);
     print_error(error_msg);
     return -1;
-
 #undef BUF
 }
 
