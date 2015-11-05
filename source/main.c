@@ -33,6 +33,7 @@ int main()
     APT_SetAppCpuTimeLimit(NULL, 0);
     aptCloseSession();
 
+    // set application default preferences
     application app = {
         .config = {
             .key = "DEFAULT",
@@ -44,29 +45,33 @@ int main()
     };
 
     // load default user configuration, overriding the app defaults
-    // the handler only change the "config" variable if it finds a valid
-    // configuration, so even without error checking it should be safe
-    ini_parse(INI_FILE, handler, &app.config);
+    int config_err = ini_parse(INI_FILE, handler, &app.config);
 
+    // get pressed user key, convert to string to pass to ini_parse
     hidScanInput();
     u32 key = hidKeysDown();
-    char *aux;
+    char *key_str;
     switch (key) {
         // using X-macros to generate each switch-case rules
         // https://en.wikibooks.org/wiki/C_Programming/Preprocessor#X-Macros
         #define KEY(k) \
         case KEY_##k: \
-            aux = "KEY_"#k; \
+            key_str = "KEY_"#k; \
             break;
         #include "keys.def"
         default:
-            aux = "DEFAULT";
+            key_str = "DEFAULT";
             break;
     }
-    app.config.key = aux;
+    app.config.key = key_str;
 
-    int error = ini_parse(INI_FILE, handler, &app.config);
-    switch (error) {
+    // only call ini_parse again if user pressed a key to load the
+    // corresponding key preferences
+    if (key_str[0] != 'D') {
+        config_err = ini_parse(INI_FILE, handler, &app.config);
+    }
+
+    switch (config_err) {
         case 0:
             if (app.config.path[0] != '/') {
                 print_error("%s is a invalid path (missing '/')",
@@ -88,8 +93,8 @@ int main()
             break;
         default:
             if (!file_exists(DEFAULT_BOOT)) {
-                print_error("File %s not found and error found in config "
-                        "file %s on line %d", DEFAULT_BOOT, INI_FILE, error);
+                print_error("File %s not found and error found in config file "
+                        "%s on line %d", DEFAULT_BOOT, INI_FILE, config_err);
             }
             break;
     }
