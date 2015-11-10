@@ -28,9 +28,9 @@ include $(DEVKITARM)/3ds_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source source/inih source/libcakebrah source/libcakebrah/libkhax
+SOURCES		:=	source source/inih source/CakeBrah/source source/CakeBrah/source/libkhax
 DATA		:=	data
-INCLUDES	:=	include
+INCLUDES	:=	include source/CakeBrah/include
 NO_SMDH		:=	1
 
 #---------------------------------------------------------------------------------
@@ -71,7 +71,10 @@ export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
 
 export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 
-CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
+CFILES		:=	$(foreach dir,$(SOURCES),$(notdir \
+			$(filter-out source/CakeBrah/source/main.c, \
+			$(filter-out source/CakeBrah/source/hid.c, \
+			$(wildcard $(dir)/*.c)))))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
 BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))

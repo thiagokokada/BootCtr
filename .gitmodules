@@ -1,6 +1,6 @@
 [submodule "source/inih"]
 	path = source/inih
 	url = https://github.com/benhoyt/inih.git
-[submodule "source/libcakebrah"]
-	path = source/libcakebrah
-	url = https://github.com/m45t3r/libcakebrah.git
+[submodule "source/CakeBrah"]
+	path = source/CakeBrah
+	url = https://github.com/mid-kid/CakeBrah.git

@@ -6,9 +6,9 @@
 #include "scanner.h"
 #include "config.h"
 #include "misc.h"
-#include "libcakebrah/brahma.h"
+#include "CakeBrah/include/brahma.h"
 
-#define PAYLOAD_MAX_SIZE 0x10000
+#define MAX_PAYLOAD_SIZE 0x10000
 
 typedef struct {
     configuration config;
