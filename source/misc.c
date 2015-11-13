@@ -12,13 +12,12 @@ void init_services(void)
     ptmInit();
 }
 
-void exit_services(bool payload)
+void exit_services(void)
 {
     ptmExit();
     acExit();
     hidExit();
-    // hangs CakeBrah/libkhax
-    if (!payload) gfxExit();
+    gfxExit();
     closeSDArchive();
     exitFilesystem();
     aptExit();
@@ -49,7 +48,7 @@ void reboot(void)
     aptOpenSession();
     APT_HardwareResetAsync(NULL);
     aptCloseSession();
-    exit_services(false);
+    exit_services();
     exit(EXIT_FAILURE);
 }
 
