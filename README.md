@@ -1,10 +1,12 @@
 BootCtr - A simple boot manager for 3DS
 =======================================
 
-Based on 3DS Homebrew Launcher code by [Smealum][1]. The original version is
-from [mashers][2], This version removed some unused code used by Homebrew
+Based on 3DS Homebrew Launcher code by [Smealum][hbl]. The original version is
+from [mashers][hbe], This version removed some unused code used by Homebrew
 Launcher that isn't necessary in a simple bootloader, and added some
 interesting new features.
+
+Any question can be done in the [official topic][ofc] in GBAtemp forum.
 
 Features
 --------
@@ -20,7 +22,7 @@ up-to **18+1** homebrews in N3DS.
 Installation
 ------------
 
-* (Optional, but recommended) Install [HomeMenuHax][7] and set up autoboot.
+* (Optional, but recommended) Install [HomeMenuHax][hmh] and set up autoboot.
 * Modify, according to your needs, the included ``boot_config.ini`` file.
 * Rename ``BootCtr.3dsx`` to ``boot.3dsx``, copy both ``boot.3dsx`` and
 ``boot_config.ini`` to the root of your SD card.
@@ -41,7 +43,7 @@ First, clone this repository including the submodules:
 
     $ git clone --recursive https://github.com/m45t3r/BootCtr.git
 
-Compile a new binary using the included ``Makefile`` and [devkitPro][3].
+Compile a new binary using the included ``Makefile`` and [devkitPro][dvp].
 If devkitPro is correctly installed all you need to do is:
 
     $ make
@@ -52,7 +54,7 @@ to copy ``boot_config.ini`` too.
 License
 -------
 
-The original source code ([Homebrew Launcher][1]) does not have a proper
+The original source code ([Homebrew Launcher][hbl]) does not have a proper
 license, and since this code is derived from it I can't simple change the
 license for something that I would like. The ``README.md`` from HBL says:
 
@@ -66,16 +68,17 @@ license, so go ahead and fork and do something interesting.
 Credits
 -------
 
-* @smealum and everyone that worked in the [Homebrew Launcher][1]
-* @mashers, for the original source code of [HBL-Emergency][2]
-* @Cpasjuste, for some ideas from his [CtrBootManager][4]
-* @benhoyt, for [inih][5]
-* @mid-kid and others, for [CakeBrah][6]
+* @smealum and everyone that worked in the [Homebrew Launcher][hbl]
+* @mashers, for the original source code of [HBL-Emergency][hbe]
+* @Cpasjuste, for some ideas from his [CtrBootManager][cbm]
+* @benhoyt, for [inih][inh]
+* @mid-kid and others, for [CakeBrah][ckb]
 
-[1]: https://github.com/smealum/3ds_hb_menu
-[2]: https://gbatemp.net/threads/release-homebrew-emergency-launcher.399394/
-[3]: http://devkitpro.org/
-[4]: https://github.com/Cpasjuste/CtrBootManager
-[5]: https://github.com/benhoyt/inih
-[6]: https://github.com/mid-kid/CakeBrah
-[7]: https://github.com/yellows8/3ds_homemenuhax
+[hbl]: https://github.com/smealum/3ds_hb_menu
+[hbe]: https://gbatemp.net/threads/release-homebrew-emergency-launcher.399394/
+[dkp]: http://devkitpro.org/
+[cbm]: https://github.com/Cpasjuste/CtrBootManager
+[inh]: https://github.com/benhoyt/inih
+[ckb]: https://github.com/mid-kid/CakeBrah
+[hmh]: https://github.com/yellows8/3ds_homemenuhax
+[ofc]: https://gbatemp.net/threads/re-release-bootctr-a-simple-boot-manager-for-3ds.401630/
