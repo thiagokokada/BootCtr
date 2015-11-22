@@ -8,7 +8,6 @@
 #include "misc.h"
 
 #define DEFAULT_BOOT "/boot_default.3dsx"
-#define DEFAULT_DELAY 100 /* ms */
 #define DEFAULT_PAYLOAD -1 /* <0 - auto, 0 - disable, >0 - enabled */
 #define DEFAULT_OFFSET 0x12000
 #define INI_FILE "/boot_config.ini"
@@ -38,7 +37,6 @@ int main()
         .config = {
             .key = "DEFAULT",
             .path = DEFAULT_BOOT,
-            .delay = DEFAULT_DELAY,
             .payload = DEFAULT_PAYLOAD,
             .offset = DEFAULT_OFFSET
         }
@@ -102,10 +100,9 @@ int main()
     print_debug("\n"
                 "key: %s\n"
                 "path: %s\n"
-                "delay: %d\n"
                 "payload: %d\n"
                 "offset: %x\n",
-                app.config.key, app.config.path, app.config.delay,
+                app.config.key, app.config.path,
                 app.config.payload, app.config.offset);
 
     return load(app);
