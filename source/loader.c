@@ -1,5 +1,15 @@
 #include "loader.h"
 
+void boot_fix(int delay)
+{
+    for (;aptMainLoop() && delay > 0; --delay) {
+        //gfxClearColor((u8[]){0x00, 0x00, 0x00});
+	gfxFlushBuffers();
+	gfxSwapBuffers();
+	gspWaitForVBlank();
+    }
+}
+
 int load_3dsx(application app)
 {
     scanExecutable2(&app.em, app.config.path);
@@ -36,6 +46,8 @@ error:
 
 int load(application app)
 {
+    boot_fix(app.config.delay);
+
     if (app.config.payload < 0) {
         char *ext = get_filename_ext(app.config.path);
         strtolower(ext);
