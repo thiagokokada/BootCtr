@@ -30,7 +30,7 @@ int main()
 
     // offset potential issues caused by homebrew that just ran
     aptOpenSession();
-    APT_SetAppCpuTimeLimit(NULL, 0);
+    APT_SetAppCpuTimeLimit(0);
     aptCloseSession();
 
     // set application default preferences

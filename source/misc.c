@@ -2,26 +2,24 @@
 
 void init_services(void)
 {
-    srvInit();
     aptInit();
     gfxInitDefault();
     initFilesystem();
     openSDArchive();
     hidInit();
     acInit();
-    ptmInit();
+    ptmuInit();
 }
 
 void exit_services(void)
 {
-    ptmExit();
+    ptmuExit();
     acExit();
     hidExit();
     gfxExit();
     closeSDArchive();
     exitFilesystem();
     aptExit();
-    srvExit();
 }
 
 int file_exists(const char *fname)
@@ -46,7 +44,7 @@ void strtolower(char *str)
 void reboot(void)
 {
     aptOpenSession();
-    APT_HardwareResetAsync(NULL);
+    APT_HardwareResetAsync();
     aptCloseSession();
     exit_services();
     exit(EXIT_FAILURE);
