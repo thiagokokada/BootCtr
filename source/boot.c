@@ -9,7 +9,7 @@
 extern void (*__system_retAddr)(void);
 
 static Handle hbFileHandle;
-static u32 argbuffer[0x200];
+static u32 argbuffer[0x100];
 static u32 argbuffer_length = 0;
 
 // ninjhax 1.x
@@ -70,18 +70,18 @@ bool isNinjhax2(void)
 
 int bootApp(char* executablePath, executableMetadata_s* em)
 {
+    // set argv/argc
+    argbuffer[0] = 0;
+    argbuffer_length = sizeof(argbuffer);
+    argbuffer[0] = 1;
+    snprintf((char*)&argbuffer[1], sizeof(argbuffer) - 4, "sdmc:%s", executablePath);
+
     // open file that we're going to boot up
     fsInit();
     FSUSER_OpenFileDirectly(&hbFileHandle, sdmcArchive,
             fsMakePath(PATH_ASCII, executablePath),
             FS_OPEN_READ, 0);
     fsExit();
-
-    // set argv/argc
-    argbuffer[0] = 0;
-    argbuffer_length = 0x200*4;
-    argbuffer[0] = 1;
-    snprintf((char*)&argbuffer[1], 0x200*4 - 4, "sdmc:%s", executablePath);
 
     // figure out the preferred way of running the 3dsx
     if(!hbInit()) {
@@ -90,7 +90,7 @@ int bootApp(char* executablePath, executableMetadata_s* em)
         HB_GetBootloaderAddresses((void**)&callBootloader_1x, (void**)&setArgs_1x);
         hbExit();
         // set argv
-        setArgs_1x(argbuffer, 0x200*4);
+        setArgs_1x(argbuffer, sizeof(argbuffer));
         // override return address to homebrew booting code
         __system_retAddr = launchFile_1x;
     } else {

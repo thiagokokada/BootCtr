@@ -39,13 +39,14 @@ NO_SMDH		:=	1
 ARCH		:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard
 
 COMMONFLAGS	:=	-g -Wall -Wextra -Os -mword-relocations -fomit-frame-pointer \
-			-ffast-math -DARM11 -D_3DS
+			-ffunction-sections -ffast-math -DARM11 -D_3DS
 CFLAGS		:=	$(COMMONFLAGS) $(ARCH) $(INCLUDE) -std=gnu11
 CXXFLAGS	:=	$(COMMONFLAGS) $(ARCH) $(INCLUDE) -std=gnu++11 \
 			-fno-rtti -fno-exceptions
 
 ASFLAGS		:=	-g $(ARCH)
-LDFLAGS		:=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
+LDFLAGS		:=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map) \
+			-Wl,--gc-sections
 
 LIBS		:= 	-lctru
 
