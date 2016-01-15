@@ -28,8 +28,6 @@ int main()
 {
     init_services();
 
-    osSetSpeedupEnable(true);
-
     // offset potential issues caused by homebrew that just ran
     aptOpenSession();
     APT_SetAppCpuTimeLimit(0);
