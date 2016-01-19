@@ -43,7 +43,7 @@ First, clone this repository including the submodules:
 
     $ git clone --recursive https://github.com/m45t3r/BootCtr.git
 
-Compile a new binary using the included ``Makefile`` and [devkitPro][dvp].
+Compile a new binary using the included ``Makefile`` and [devkitPro][dkp].
 If devkitPro is correctly installed all you need to do is:
 
     $ make
