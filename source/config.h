@@ -10,7 +10,7 @@ typedef struct {
     // "path" and "delay" are the results read from handler() function
     char *key;
     char *path;
-    unsigned int delay;
+    unsigned long long delay;
     int payload;
     unsigned long offset;
 } configuration;

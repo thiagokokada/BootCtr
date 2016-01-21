@@ -8,6 +8,7 @@
 #include "CakeBrah/include/brahma.h"
 
 #define MAX_PAYLOAD_SIZE 0x10000
+#define MS_TO_NS 1000000ULL
 
 typedef struct {
     configuration config;

@@ -2,12 +2,7 @@
 
 void boot_fix(int delay)
 {
-    for (;aptMainLoop() && delay > 0; --delay) {
-        //gfxClearColor((u8[]){0x00, 0x00, 0x00});
-	gfxFlushBuffers();
-	gfxSwapBuffers();
-	gspWaitForVBlank();
-    }
+    svcSleepThread(delay * MS_TO_NS);
 }
 
 int load_3dsx(application app)

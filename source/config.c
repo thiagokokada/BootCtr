@@ -8,7 +8,7 @@ int handler(void *user, const char *section, const char *name, const char *value
 	if (MATCH(pconfig->key, "path")) {
 		pconfig->path = strdup(value);
 	} else if (MATCH(pconfig->key, "delay")) {
-		pconfig->delay = strtoul(value, NULL, 10);
+		pconfig->delay = strtoull(value, NULL, 10);
 	} else if (MATCH(pconfig->key, "payload")) {
 		pconfig->payload = strtol(value, NULL, 10);
 	} else if (MATCH(pconfig->key, "offset")) {
