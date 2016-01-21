@@ -22,13 +22,6 @@ static void launchFile_1x(void)
     callBootloader_1x(0x00000000, hbFileHandle);
 }
 
-// ninjhax 2.0+
-typedef struct
-{
-    int processId;
-    bool capabilities[0x10];
-} processEntry_s;
-
 void (*callBootloader_2x)
     (Handle file, u32* argbuf, u32 arglength) = (void*)0x00100000;
 void (*callBootloaderNewProcess_2x)
@@ -36,9 +29,6 @@ void (*callBootloaderNewProcess_2x)
 void (*callBootloaderRunTitle_2x)
     (u8 mediatype, u32* argbuf, u32 argbuflength,
      u32 tid_low, u32 tid_high) = (void*)0x00100010;
-void (*getBestProcess_2x)
-    (u32 sectionSizes[3], bool* requirements, int num_requirements,
-     processEntry_s* out, int out_size, int* out_len) = (void*)0x0010000C;
 
 int targetProcessId = -1;
 titleInfo_s target_title;
