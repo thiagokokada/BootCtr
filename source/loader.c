@@ -34,7 +34,7 @@ int load_payload(application app)
 
 error:
     exit_services();
-    print_error(error_msg);
+    panic(error_msg);
     return -1;
 }
 
@@ -51,7 +51,7 @@ int load(application app)
         } else if(!strncmp(ext, "3dsx", 4)) {
             return load_3dsx(app);
         } else {
-            print_error("Invalid file: %s\n", app.config.path);
+            panic("Invalid file: %s\n", app.config.path);
             return 1;
         }
     } else if (app.config.payload > 0) {

@@ -9,6 +9,7 @@ void init_services(void)
     hidInit();
     acInit();
     ptmuInit();
+    consoleInit(GFX_TOP, NULL);
 }
 
 void exit_services(void)
@@ -63,13 +64,11 @@ void wait_key(const u32 key)
     }
 }
 
-void print_debug(const char *msg, ...)
+void debug(const char *msg, ...)
 {
 #ifndef DEBUG
     (void)msg;
 #else
-    consoleInit(GFX_TOP, NULL);
-
     printf("DEBUG: ");
 
     va_list args;
@@ -83,10 +82,8 @@ void print_debug(const char *msg, ...)
 #endif
 }
 
-void print_error(const char *msg, ...)
+void panic(const char *msg, ...)
 {
-    consoleInit(GFX_TOP, NULL);
-
     printf("ERROR: ");
 
     va_list args;

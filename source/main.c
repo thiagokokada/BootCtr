@@ -76,17 +76,17 @@ int main()
     switch (config_err) {
         case 0:
             if (app.config.path[0] != '/') {
-                print_error("%s is a invalid path (missing '/')",
-                        app.config.path);
+                panic("%s is a invalid path (missing '/')",
+                      app.config.path);
             }
             if (!file_exists(app.config.path)) {
-                print_error("File %s not found", app.config.path);
+                panic("File %s not found", app.config.path);
             }
             break;
         case -1:
             if (!file_exists(DEFAULT_BOOT)) {
-                print_error("File %s and config file %s not found",
-                        DEFAULT_BOOT, INI_FILE);
+                panic("File %s and config file %s not found",
+                      DEFAULT_BOOT, INI_FILE);
             }
             break;
         case -2:
@@ -95,20 +95,19 @@ int main()
             break;
         default:
             if (!file_exists(DEFAULT_BOOT)) {
-                print_error("File %s not found and error found in config file "
-                        "%s on line %d", DEFAULT_BOOT, INI_FILE, config_err);
+                panic("File %s not found and error found in config file "
+                      "%s on line %d", DEFAULT_BOOT, INI_FILE, config_err);
             }
             break;
     }
 
-    print_debug("\n"
-                "key: %s\n"
-                "path: %s\n"
-                "delay: %d\n"
-                "payload: %d\n"
-                "offset: %x\n",
-                app.config.key, app.config.path, app.config.delay,
-                app.config.payload, app.config.offset);
+    debug("\nkey: %s"
+          "\npath: %s"
+          "\ndelay: %d"
+          "\npayload: %d"
+          "\noffset: %x\n",
+          app.config.key, app.config.path, app.config.delay,
+          app.config.payload, app.config.offset);
 
     return load(app);
 }
