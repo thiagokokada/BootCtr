@@ -24,8 +24,7 @@ Installation
 
 * (Optional, but recommended) Install [HomeMenuHax][hmh] and set up autoboot.
 * Modify, according to your needs, the included ``boot_config.ini`` file.
-* Rename ``BootCtr.3dsx`` to ``boot.3dsx``, copy both ``boot.3dsx`` and
-``boot_config.ini`` to the root of your SD card.
+* Copy both ``boot.3dsx`` and ``boot_config.ini`` to the root of your SD card.
 
 Usage
 -----
@@ -48,8 +47,8 @@ If devkitPro is correctly installed all you need to do is:
 
     $ make
 
-And copy/rename the new ``BootCtr.3dsx`` file to your SD card. Do not forget
-to copy ``boot_config.ini`` too.
+And copy the new ``boot.3dsx`` file to your SD card. Do not forget to copy
+``boot_config.ini`` too.
 
 License
 -------
