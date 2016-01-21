@@ -17,11 +17,13 @@
 // doing it in main is preferred because execution ends in launching another 3dsx
 void __appInit()
 {
+    srvInit();
 }
 
 // same
 void __appExit()
 {
+    srvExit();
 }
 
 int main()
