@@ -22,29 +22,14 @@ static void launchFile_1x(void)
     callBootloader_1x(0x00000000, hbFileHandle);
 }
 
+// ninjhax 2.x
 void (*callBootloader_2x)
     (Handle file, u32* argbuf, u32 arglength) = (void*)0x00100000;
-void (*callBootloaderNewProcess_2x)
-    (int processId, u32* argbuf, u32 arglength) = (void*)0x00100008;
-void (*callBootloaderRunTitle_2x)
-    (u8 mediatype, u32* argbuf, u32 argbuflength,
-     u32 tid_low, u32 tid_high) = (void*)0x00100010;
-
-int targetProcessId = -1;
-titleInfo_s target_title;
 
 static void launchFile_2x(void)
 {
     // jump to bootloader
-    if (targetProcessId == -1) {
-        callBootloader_2x(hbFileHandle, argbuffer, argbuffer_length);
-    } else if (targetProcessId == -2) {
-        callBootloaderRunTitle_2x(target_title.mediatype, argbuffer,
-                argbuffer_length, target_title.title_id & 0xffffffff,
-                (target_title.title_id >> 32) & 0xffffffff);
-    } else {
-        callBootloaderNewProcess_2x(targetProcessId, argbuffer, argbuffer_length);
-    }
+    callBootloader_2x(hbFileHandle, argbuffer, argbuffer_length);
 }
 
 bool isNinjhax2(void)
@@ -63,7 +48,7 @@ int bootApp(char* executablePath)
     // set argv/argc
     argbuffer_length = sizeof(argbuffer);
     argbuffer[0] = 1;
-    snprintf((char*)&argbuffer[1], sizeof(argbuffer) - 4, "sdmc:%s", executablePath);
+    snprintf((char*)&argbuffer[1], argbuffer_length - 4, "sdmc:%s", executablePath);
 
     // open file that we're going to boot up
     fsInit();
@@ -79,7 +64,7 @@ int bootApp(char* executablePath)
         HB_GetBootloaderAddresses((void**)&callBootloader_1x, (void**)&setArgs_1x);
         hbExit();
         // set argv
-        setArgs_1x(argbuffer, sizeof(argbuffer));
+        setArgs_1x(argbuffer, argbuffer_length);
         // override return address to homebrew booting code
         __system_retAddr = launchFile_1x;
     } else {
