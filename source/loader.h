@@ -3,7 +3,6 @@
 #include <3ds.h>
 
 #include "boot.h"
-#include "scanner.h"
 #include "config.h"
 #include "misc.h"
 #include "CakeBrah/include/brahma.h"
@@ -12,7 +11,6 @@
 
 typedef struct {
     configuration config;
-    executableMetadata_s em;
 } application;
 
 void boot_fix(int delay);

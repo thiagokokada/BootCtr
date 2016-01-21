@@ -12,9 +12,8 @@ void boot_fix(int delay)
 
 int load_3dsx(application app)
 {
-    scanExecutable2(&app.em, app.config.path);
     exit_services();
-    return bootApp(app.config.path, &app.em);
+    return bootApp(app.config.path);
 }
 
 int load_payload(application app)
