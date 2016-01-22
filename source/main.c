@@ -52,31 +52,29 @@ int main()
     // get pressed user key, convert to string to pass to ini_parse
     hidScanInput();
     u32 key = hidKeysDown();
-    char *key_str;
     switch (key) {
         // using X-macros to generate each switch-case rules
         // https://en.wikibooks.org/wiki/C_Programming/Preprocessor#X-Macros
         #define KEY(k) \
         case KEY_##k: \
-            key_str = "KEY_"#k; \
+            app.config.key = "KEY_"#k; \
             break;
         #include "keys.def"
         default:
-            key_str = "DEFAULT";
+            app.config.key = "DEFAULT";
             break;
     }
-    app.config.key = key_str;
 
     // only call ini_parse again if user pressed a key to load the
     // corresponding key preferences
-    if (key_str[0] != 'D') {
+    if (app.config.key[0] != 'D') {
         config_err = ini_parse(INI_FILE, handler, &app.config);
     }
 
     switch (config_err) {
         case 0:
             if (app.config.path[0] != '/') {
-                panic("%s is a invalid path (missing '/')",
+                panic("%s is an invalid path",
                       app.config.path);
             }
             if (!file_exists(app.config.path)) {
