@@ -2,6 +2,7 @@
 
 void init_services(void)
 {
+    aptInit();
     gfxInitDefault();
     initFilesystem();
     openSDArchive();
@@ -14,6 +15,7 @@ void exit_services(void)
     gfxExit();
     closeSDArchive();
     exitFilesystem();
+    aptExit();
 }
 
 int file_exists(const char *fname)
