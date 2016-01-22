@@ -7,14 +7,10 @@ void init_services(void)
     initFilesystem();
     openSDArchive();
     hidInit();
-    acInit();
-    ptmuInit();
 }
 
 void exit_services(void)
 {
-    ptmuExit();
-    acExit();
     hidExit();
     gfxExit();
     closeSDArchive();
