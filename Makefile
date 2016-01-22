@@ -30,9 +30,9 @@ NAME		:=	BootCtr
 VERSION		:=	$(shell git describe --tags)
 TARGET		:=	boot
 BUILD		:=	build
-SOURCES		:=	source source/inih source/CakeBrah/source source/CakeBrah/source/libkhax
+SOURCES		:=	source inih CakeBrah/source CakeBrah/source/libkhax
 DATA		:=	data
-INCLUDES	:=	include source/CakeBrah/include
+INCLUDES	:=	include inih CakeBrah/include
 NO_SMDH		:=	1
 
 #---------------------------------------------------------------------------------
@@ -75,8 +75,8 @@ export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
 export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir \
-			$(filter-out source/CakeBrah/source/main.c, \
-			$(filter-out source/CakeBrah/source/hid.c, \
+			$(filter-out CakeBrah/source/main.c, \
+			$(filter-out CakeBrah/source/hid.c, \
 			$(wildcard $(dir)/*.c)))))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
