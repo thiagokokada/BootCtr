@@ -12,7 +12,6 @@ void boot_fix(int delay)
 
 int load_3dsx(application app)
 {
-    exit_services();
     return bootApp(app.config.path);
 }
 
@@ -30,7 +29,6 @@ int load_payload(application app)
         }
         firm_reboot();
         brahma_exit();
-        exit_services();
     } else {
         snprintf(error_msg, buf, "Couldn't init Brahma loader");
         goto error;
@@ -38,7 +36,6 @@ int load_payload(application app)
     return 0;
 
 error:
-    exit_services();
     panic(error_msg);
     return -1;
 }

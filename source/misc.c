@@ -1,23 +1,5 @@
 #include "misc.h"
 
-void init_services(void)
-{
-    aptInit();
-    gfxInitDefault();
-    initFilesystem();
-    openSDArchive();
-    hidInit();
-}
-
-void exit_services(void)
-{
-    hidExit();
-    gfxExit();
-    closeSDArchive();
-    exitFilesystem();
-    aptExit();
-}
-
 int file_exists(const char *fname)
 {
     return access(fname, F_OK) == 0;
@@ -42,7 +24,6 @@ void reboot(void)
     aptOpenSession();
     APT_HardwareResetAsync();
     aptCloseSession();
-    exit_services();
     exit(EXIT_FAILURE);
 }
 

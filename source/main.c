@@ -18,18 +18,26 @@
 void __appInit()
 {
     srvInit();
+    aptInit();
+    gfxInitDefault();
+    initFilesystem();
+    openSDArchive();
+    hidInit();
 }
 
 // same
 void __appExit()
 {
+    hidExit();
+    gfxExit();
+    closeSDArchive();
+    exitFilesystem();
+    aptExit();
     srvExit();
 }
 
 int main()
 {
-    init_services();
-
     // offset potential issues caused by homebrew that just ran
     aptOpenSession();
     APT_SetAppCpuTimeLimit(0);
