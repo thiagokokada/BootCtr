@@ -65,7 +65,7 @@ void debug(const char *msg, ...)
     (void)msg;
 #else
     consoleInit(GFX_TOP, NULL);
-    
+
     printf("DEBUG: ");
 
     va_list args;
