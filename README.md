@@ -50,6 +50,13 @@ If devkitPro is correctly installed all you need to do is:
 And copy the new ``boot.3dsx`` file to your SD card. Do not forget to copy
 ``boot_config.ini`` too.
 
+Alternatively you can run the command below too:
+
+    $ make release
+
+To generate a .zip file including all source code and auxiliary files, ready
+for distribution.
+
 License
 -------
 
