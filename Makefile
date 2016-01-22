@@ -26,6 +26,8 @@ include $(DEVKITARM)/3ds_rules
 #     - icon.png
 #     - <libctru folder>/default_icon.png
 #---------------------------------------------------------------------------------
+NAME		:=	BootCtr
+VERSION		:=	$(shell git describe --tags)
 TARGET		:=	boot
 BUILD		:=	build
 SOURCES		:=	source source/inih source/CakeBrah/source source/CakeBrah/source/libkhax
@@ -127,13 +129,13 @@ $(BUILD):
 
 #---------------------------------------------------------------------------------
 release: $(BUILD)
-	@zip -9 -r $(TARGET).zip * --exclude="*build*" --exclude="*.git" \
+	@zip -9 -r $(NAME)-$(VERSION).zip * --exclude="*build*" --exclude="*.git" \
 		--exclude="*.elf" --exclude="*.zip"
 
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf $(TARGET).zip
+	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf *.zip
 
 
 #---------------------------------------------------------------------------------
@@ -150,35 +152,4 @@ all	:	$(OUTPUT).3dsx $(OUTPUT).smdh
 endif
 $(OUTPUT).3dsx	:	$(OUTPUT).elf
 $(OUTPUT).elf	:	$(OFILES)
-
-#---------------------------------------------------------------------------------
-# you need a rule like this for each extension you use as binary data
-#---------------------------------------------------------------------------------
-%.bin.o	:	%.bin
-#---------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	@$(bin2o)
-
-#---------------------------------------------------------------------------------
-%.ttf.o	:	%.ttf
-#---------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	@$(bin2o)
-
-# WARNING: This is not the right way to do this! TODO: Do it right!
-#---------------------------------------------------------------------------------
-%.vsh.o	:	%.vsh
-#---------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	@python $(AEMSTRO)/aemstro_as.py $< ../$(notdir $<).shbin
-	@bin2s ../$(notdir $<).shbin | $(PREFIX)as -o $@
-	@echo "extern const u8" `(echo $(notdir $<).shbin | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"_end[];" > `(echo $(notdir $<).shbin | tr . _)`.h
-	@echo "extern const u8" `(echo $(notdir $<).shbin | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"[];" >> `(echo $(notdir $<).shbin | tr . _)`.h
-	@echo "extern const u32" `(echo $(notdir $<).shbin | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`_size";" >> `(echo $(notdir $<).shbin | tr . _)`.h
-	@rm ../$(notdir $<).shbin
-
--include $(DEPENDS)
-
-#---------------------------------------------------------------------------------------
 endif
-#---------------------------------------------------------------------------------------
