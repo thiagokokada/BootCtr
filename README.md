@@ -72,6 +72,13 @@ In the section below we give proper credits to everyone that helped creating
 this project. Of course, all of my modifications is distributed in a similar
 license, so go ahead and fork and do something interesting.
 
+CakeBrah does not seem to have a proper license too. However, [brahma][bhm]
+uses a license similar to MIT (see ``README-brahma`` for details), and
+CakeBrah is a derived work so it should use a similar license.
+
+[inih][inh] is distributed under New BSD License, while [libkhax][khx] (not
+used directly, however it is a dependency of CakeBrah) uses MIT license.
+
 Credits
 -------
 
@@ -89,3 +96,5 @@ Credits
 [ckb]: https://github.com/mid-kid/CakeBrah
 [hmh]: https://github.com/yellows8/3ds_homemenuhax
 [ofc]: https://gbatemp.net/threads/re-release-bootctr-a-simple-boot-manager-for-3ds.401630/
+[bhm]: https://github.com/patois/Brahma
+[khx]: https://github.com/Myriachan/libkhax
