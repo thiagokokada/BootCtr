@@ -2,6 +2,11 @@
 
 void boot_fix(int delay)
 {
+    // voodoo to improve rxTools boot rate
+    gfxFlushBuffers();
+    gfxSwapBuffers();
+    gspWaitForVBlank();
+    // actually delay boot for some ms
     svcSleepThread(delay * MS_TO_NS);
 }
 
