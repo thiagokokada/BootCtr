@@ -21,6 +21,7 @@ void __appInit()
     srvInit();
     aptInit();
     gfxInitDefault();
+    consoleInit(GFX_TOP, NULL);
     initFilesystem();
     openSDArchive();
     hidInit();
@@ -111,9 +112,9 @@ int main()
 
     debug("\nkey: %s"
           "\npath: %s"
-          "\ndelay: %d"
+          "\ndelay: %llu"
           "\npayload: %d"
-          "\noffset: %x"
+          "\noffset: %lx"
           "\ncfw_fix: %d\n",
           app.config.key, app.config.path, app.config.delay,
           app.config.payload, app.config.offset, app.config.cfw_fix);
