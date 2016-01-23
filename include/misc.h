@@ -10,7 +10,7 @@
 
 #include "filesystem.h"
 
-#define DEBUG
+//#define DEBUG
 
 int file_exists(const char *fname);
 char *get_filename_ext(const char *filename);
