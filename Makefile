@@ -14,8 +14,8 @@ include $(DEVKITARM)/3ds_rules
 VERSION		:=	$(shell git describe --tags || echo "UNKNOWN")
 TARGET		:=	boot
 BUILD		:=	build
-SOURCES		:=	source inih CakeBrah/source CakeBrah/source/libkhax
-INCLUDES	:=	include inih CakeBrah/include
+SOURCES		:=	source libs/inih libs/CakeBrah/source libs/CakeBrah/source/libkhax
+INCLUDES	:=	include libs/inih libs/CakeBrah/include
 NO_SMDH		:=	1
 APP_TITLE	:=	BootCtr
 APP_DESCRIPTION	:=	A simple boot manager for 3DS
@@ -46,8 +46,8 @@ export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
 export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir \
-			$(filter-out CakeBrah/source/main.c, \
-			$(filter-out CakeBrah/source/hid.c, \
+			$(filter-out libs/CakeBrah/source/main.c, \
+			$(filter-out libs/CakeBrah/source/hid.c, \
 			$(wildcard $(dir)/*.c)))))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
