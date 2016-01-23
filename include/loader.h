@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "boot.h"
+#include "scanner.h"
 #include "config.h"
 #include "misc.h"
 #include "brahma.h"
@@ -13,6 +14,7 @@
 
 typedef struct {
     configuration config;
+    executableMetadata_s em;
 } application;
 
 void boot_fix(int delay, bool cfw_fix);

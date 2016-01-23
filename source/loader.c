@@ -14,7 +14,8 @@ void boot_fix(int delay, bool cfw_fix)
 
 int load_3dsx(application app)
 {
-    return bootApp(app.config.path);
+    scanExecutable2(&app.em, app.config.path);
+    return bootApp(app.config.path, &app.em);
 }
 
 int load_payload(application app)
