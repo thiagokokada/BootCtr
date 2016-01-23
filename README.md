@@ -16,8 +16,8 @@ Features
 * Supports advanced features in ``.3dsx`` files, like network support.
 * Boot delay, to increase the boot rate chance of CFWs like rxTools and
 CakesFW.
-* Allows up-to **12+1** (12 using keys plus 1 default) homebrews in O3DS,
-up-to **18+1** homebrews in N3DS.
+* Allows up-to **16+1** (12 using keys plus 1 default) homebrews in O3DS,
+up-to **22+1** homebrews in N3DS.
 
 Installation
 ------------
