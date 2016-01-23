@@ -12,6 +12,7 @@
 #define DEFAULT_PAYLOAD -1 /* <0 - auto, 0 - disable, >0 - enabled */
 #define DEFAULT_OFFSET 0x12000
 #define DEFAULT_CFW_FIX true
+#define DEFAULT_DEBUG false
 #define INI_FILE "/boot_config.ini"
 
 // handled in main
@@ -53,7 +54,8 @@ int main()
             .delay = DEFAULT_DELAY,
             .payload = DEFAULT_PAYLOAD,
             .offset = DEFAULT_OFFSET,
-            .cfw_fix = DEFAULT_CFW_FIX
+            .cfw_fix = DEFAULT_CFW_FIX,
+            .debug = DEFAULT_DEBUG
         }
     };
 
@@ -110,14 +112,16 @@ int main()
             break;
     }
 
-    debug("\nkey: %s"
-          "\npath: %s"
-          "\ndelay: %llu"
-          "\npayload: %d"
-          "\noffset: %lx"
-          "\ncfw_fix: %d\n",
-          app.config.key, app.config.path, app.config.delay,
-          app.config.payload, app.config.offset, app.config.cfw_fix);
+    if (app.config.debug) {
+        debug("\nkey: %s"
+              "\npath: %s"
+              "\ndelay: %llu"
+              "\npayload: %d"
+              "\noffset: %lx"
+              "\ncfw_fix: %d\n",
+              app.config.key, app.config.path, app.config.delay,
+              app.config.payload, app.config.offset, app.config.cfw_fix);
+    }
 
     return load(app);
 }

@@ -42,9 +42,6 @@ void wait_key(const u32 key)
 
 void debug(const char *msg, ...)
 {
-#ifndef DEBUG
-    (void)msg;
-#else
     consoleInit(GFX_TOP, NULL);
 
     printf("DEBUG: ");
@@ -57,7 +54,6 @@ void debug(const char *msg, ...)
     printf("\nPress START to continue...\n");
 
     wait_key(KEY_START);
-#endif
 }
 
 void panic(const char *msg, ...)
