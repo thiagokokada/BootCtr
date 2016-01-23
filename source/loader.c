@@ -1,11 +1,13 @@
 #include "loader.h"
 
-void boot_fix(int delay)
+void boot_fix(int delay, bool cfw_fix)
 {
-    // voodoo to improve rxTools boot rate
-    gfxFlushBuffers();
-    gfxSwapBuffers();
-    gspWaitForVBlank();
+    if (cfw_fix) {
+        // voodoo to improve CFW boot rate
+        gfxFlushBuffers();
+        gfxSwapBuffers();
+        gspWaitForVBlank();
+    }
     // actually delay boot for some ms
     svcSleepThread(delay * MS_TO_NS);
 }
@@ -42,7 +44,7 @@ error:
 
 int load(application app)
 {
-    boot_fix(app.config.delay);
+    boot_fix(app.config.delay, app.config.cfw_fix);
 
     if (app.config.payload < 0) {
         char *ext = get_filename_ext(app.config.path);

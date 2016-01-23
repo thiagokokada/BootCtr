@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "ini.h"
 
@@ -13,6 +14,7 @@ typedef struct {
     unsigned long long delay;
     int payload;
     unsigned long offset;
+    bool cfw_fix;
 } configuration;
 
 #define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0

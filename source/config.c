@@ -13,6 +13,8 @@ int handler(void *user, const char *section, const char *name, const char *value
 		pconfig->payload = strtol(value, NULL, 10);
 	} else if (MATCH(pconfig->key, "offset")) {
 		pconfig->offset = strtoul(value, NULL, 0);
+	} else if (MATCH(pconfig->key, "cfw_fix")) {
+		pconfig->cfw_fix = strtol(value, NULL, 10) ? true : false;
 	}
 	return 1;
 }

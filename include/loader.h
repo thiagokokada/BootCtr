@@ -1,6 +1,7 @@
 #pragma once
 
 #include <3ds.h>
+#include <stdbool.h>
 
 #include "boot.h"
 #include "config.h"
@@ -14,7 +15,7 @@ typedef struct {
     configuration config;
 } application;
 
-void boot_fix(int delay);
+void boot_fix(int delay, bool cfw_fix);
 int load_3dsx(application app);
 int load_payload(application app);
 int load(application app);
