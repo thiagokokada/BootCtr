@@ -22,7 +22,6 @@ void __appInit()
     srvInit();
     aptInit();
     gfxInitDefault();
-    consoleInit(GFX_TOP, NULL);
     initFilesystem();
     openSDArchive();
     hidInit();
