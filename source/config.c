@@ -3,8 +3,6 @@
 int handler(void *user, const char *section, const char *name, const char *value)
 {
 	configuration *pconfig = (configuration *) user;
-	// unless user forces this setting, it should always default to AUTO
-	pconfig->payload = -1;
 	if (MATCH(pconfig->key, "path")) {
 		pconfig->path = strdup(value);
 	} else if (MATCH(pconfig->key, "delay")) {

@@ -58,9 +58,6 @@ int main()
         }
     };
 
-    // load default user configuration, overriding the app defaults
-    int config_err = ini_parse(INI_FILE, handler, &app.config);
-
     // get pressed user key, convert to string to pass to ini_parse
     hidScanInput();
     u32 key = hidKeysDown();
@@ -77,12 +74,7 @@ int main()
             break;
     }
 
-    // only call ini_parse again if user pressed a key to load the
-    // corresponding key preferences
-    if (app.config.key[0] != 'D') {
-        config_err = ini_parse(INI_FILE, handler, &app.config);
-    }
-
+    int config_err = ini_parse(INI_FILE, handler, &app.config);
     switch (config_err) {
         case 0:
             if (app.config.path[0] != '/') {
