@@ -7,7 +7,7 @@
 #include "config.h"
 #include "misc.h"
 
-#define DEFAULT_BOOT "/boot_default.3dsx"
+#define DEFAULT_PATH NULL
 #define DEFAULT_DELAY 1500 /* ms */
 #define DEFAULT_PAYLOAD -1 /* <0 - auto, 0 - disable, >0 - enabled */
 #define DEFAULT_OFFSET 0x12000
@@ -49,7 +49,7 @@ int main()
     application app = {
         .config = {
             .key = "DEFAULT",
-            .path = DEFAULT_BOOT,
+            .path = DEFAULT_PATH,
             .delay = DEFAULT_DELAY,
             .payload = DEFAULT_PAYLOAD,
             .offset = DEFAULT_OFFSET,
@@ -77,29 +77,31 @@ int main()
     int config_err = ini_parse(INI_FILE, handler, &app.config);
     switch (config_err) {
         case 0:
-            if (app.config.path[0] != '/') {
-                panic("%s is an invalid path",
-                      app.config.path);
-            }
-            if (!file_exists(app.config.path)) {
-                panic("File %s not found", app.config.path);
+            // section not found, try to load [DEFAULT] section
+            if (!app.config.path) {
+                app.config.key = "DEFAULT";
+                // don't need to check error again
+                ini_parse(INI_FILE, handler, &app.config);
+                if (!app.config.path)
+                    panic("Section [DEFAULT] not found or \"path\" not set");
+            } else if (app.config.path[0] != '/') {
+                panic("In section [%s], %s is an invalid path",
+                        app.config.key, app.config.path);
+            } else if (!file_exists(app.config.path)) {
+                panic("In section [%s], file %s not found",
+                        app.config.key, app.config.path);
             }
             break;
         case -1:
-            if (!file_exists(DEFAULT_BOOT)) {
-                panic("File %s and config file %s not found",
-                      DEFAULT_BOOT, INI_FILE);
-            }
+            panic("Config file %s not found", INI_FILE);
             break;
         case -2:
-            // never happens since we are using stack instead of memory
-            // allocations in inih
+            // should not happen, however better be safe than sorry
+            panic("Config file %s too big", INI_FILE);
             break;
         default:
-            if (!file_exists(DEFAULT_BOOT)) {
-                panic("File %s not found and error found in config file "
-                      "%s on line %d", DEFAULT_BOOT, INI_FILE, config_err);
-            }
+            panic("Error found in config file %s on line %d",
+                    INI_FILE, config_err);
             break;
     }
 
