@@ -63,10 +63,10 @@ int main()
     // don't need to check error for now
     ini_parse(INI_FILE, handler, &app.config);
 
-    // get pressed user section, convert to string to pass to ini_parse
+    // get pressed user key, convert to string to pass to ini_parse
     hidScanInput();
-    u32 section = hidKeysDown();
-    switch (section) {
+    u32 key = hidKeysDown();
+    switch (key) {
         // using X-macros to generate each switch-case rules
         // https://en.wikibooks.org/wiki/C_Programming/Preprocessor#X-Macros
         #define KEY(k) \
