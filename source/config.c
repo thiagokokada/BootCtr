@@ -3,17 +3,17 @@
 int handler(void *user, const char *section, const char *name, const char *value)
 {
 	configuration *pconfig = (configuration *) user;
-	if (MATCH(pconfig->key, "path")) {
+	if (MATCH(pconfig->section, "path")) {
 		pconfig->path = strdup(value);
-	} else if (MATCH(pconfig->key, "delay")) {
+	} else if (MATCH(pconfig->section, "delay")) {
 		pconfig->delay = strtoull(value, NULL, 10);
-	} else if (MATCH(pconfig->key, "payload")) {
+	} else if (MATCH(pconfig->section, "payload")) {
 		pconfig->payload = strtol(value, NULL, 10);
-	} else if (MATCH(pconfig->key, "offset")) {
+	} else if (MATCH(pconfig->section, "offset")) {
 		pconfig->offset = strtoul(value, NULL, 0);
-	} else if (MATCH(pconfig->key, "cfw_fix")) {
+	} else if (MATCH(pconfig->section, "cfw_fix")) {
 		pconfig->cfw_fix = strtol(value, NULL, 10) ? true : false;
-	} else if (MATCH(pconfig->key, "debug")) {
+	} else if (MATCH(pconfig->section, "debug")) {
 		pconfig->debug = strtol(value, NULL, 10) ? true : false;
 	}
 	return 1;

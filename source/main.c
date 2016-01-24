@@ -49,7 +49,7 @@ int main()
     // set application default preferences
     application app = {
         .config = {
-            .key = DEFAULT_SECTION,
+            .section = DEFAULT_SECTION,
             .path = DEFAULT_PATH,
             .delay = DEFAULT_DELAY,
             .payload = DEFAULT_PAYLOAD,
@@ -63,19 +63,19 @@ int main()
     // don't need to check error for now
     ini_parse(INI_FILE, handler, &app.config);
 
-    // get pressed user key, convert to string to pass to ini_parse
+    // get pressed user section, convert to string to pass to ini_parse
     hidScanInput();
-    u32 key = hidKeysDown();
-    switch (key) {
+    u32 section = hidKeysDown();
+    switch (section) {
         // using X-macros to generate each switch-case rules
         // https://en.wikibooks.org/wiki/C_Programming/Preprocessor#X-Macros
         #define KEY(k) \
         case KEY_##k: \
-            app.config.key = "KEY_"#k; \
+            app.config.section = "KEY_"#k; \
             break;
         #include "keys.def"
         default:
-            app.config.key = "DEFAULT";
+            app.config.section = "DEFAULT";
             break;
     }
 
@@ -85,17 +85,17 @@ int main()
         case 0:
             // section not found, try to load [DEFAULT] section
             if (!app.config.path) {
-                app.config.key = "DEFAULT";
+                app.config.section = "DEFAULT";
                 // don't need to check error again
                 ini_parse(INI_FILE, handler, &app.config);
                 if (!app.config.path)
                     panic("Section [DEFAULT] not found or \"path\" not set");
             } else if (app.config.path[0] != '/') {
                 panic("In section [%s], %s is an invalid path",
-                        app.config.key, app.config.path);
+                        app.config.section, app.config.path);
             } else if (!file_exists(app.config.path)) {
                 panic("In section [%s], file %s not found",
-                        app.config.key, app.config.path);
+                        app.config.section, app.config.path);
             }
             break;
         case -1:
@@ -112,13 +112,13 @@ int main()
     }
 
     if (app.config.debug) {
-        debug("\nkey: %s"
+        debug("\nsection: %s"
               "\npath: %s"
               "\ndelay: %llu"
               "\npayload: %d"
               "\noffset: %lx"
               "\ncfw_fix: %d\n",
-              app.config.key, app.config.path, app.config.delay,
+              app.config.section, app.config.path, app.config.delay,
               app.config.payload, app.config.offset, app.config.cfw_fix);
     }
 

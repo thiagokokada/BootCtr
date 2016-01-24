@@ -7,9 +7,7 @@
 #include "ini.h"
 
 typedef struct {
-    // "key" is the pressed key got in the main() function
-    // "path" and "delay" are the results read from handler() function
-    char *key;
+    char *section;
     char *path;
     unsigned long long delay;
     int payload;
