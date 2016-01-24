@@ -13,6 +13,7 @@
 #define DEFAULT_OFFSET 0x12000
 #define DEFAULT_CFW_FIX true
 #define DEFAULT_DEBUG false
+#define DEFAULT_SECTION "GLOBAL"
 #define INI_FILE "/boot_config.ini"
 
 // handled in main
@@ -48,7 +49,7 @@ int main()
     // set application default preferences
     application app = {
         .config = {
-            .key = "DEFAULT",
+            .key = DEFAULT_SECTION,
             .path = DEFAULT_PATH,
             .delay = DEFAULT_DELAY,
             .payload = DEFAULT_PAYLOAD,
@@ -57,6 +58,10 @@ int main()
             .debug = DEFAULT_DEBUG
         }
     };
+
+    // override default options with [GLOBAL] section
+    // don't need to check error for now
+    ini_parse(INI_FILE, handler, &app.config);
 
     // get pressed user key, convert to string to pass to ini_parse
     hidScanInput();
@@ -74,6 +79,7 @@ int main()
             break;
     }
 
+    // load config from section [KEY_*], check error for issues
     int config_err = ini_parse(INI_FILE, handler, &app.config);
     switch (config_err) {
         case 0:
