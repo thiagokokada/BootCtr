@@ -12,8 +12,6 @@ typedef struct {
     unsigned long long delay;
     int payload;
     unsigned long offset;
-    bool cfw_fix;
-    bool debug;
 } configuration;
 
 #define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0

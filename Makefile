@@ -1,6 +1,7 @@
 #---------------------------------------------------------------------------------
 .SUFFIXES:
 #---------------------------------------------------------------------------------
+
 ifeq ($(strip $(DEVKITARM)),)
 $(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM")
 endif
@@ -16,6 +17,7 @@ TARGET		:=	boot
 BUILD		:=	build
 SOURCES		:=	source libs/inih libs/CakeBrah/source libs/CakeBrah/source/libkhax
 INCLUDES	:=	include libs/inih libs/CakeBrah/include
+GRAPHICS	:=	gfx
 NO_SMDH		:=	1
 APP_TITLE	:=	BootCtr
 APP_DESCRIPTION	:=	A simple boot manager for 3DS
@@ -29,20 +31,31 @@ COMMONFLAGS	:=	$(ARCH) $(INCLUDE) -Wall -Wextra -Os -mword-relocations \
 			-fomit-frame-pointer -ffunction-sections -ffast-math \
 			-DARM11 -D_3DS
 CFLAGS		:=	$(COMMONFLAGS) -std=gnu11
-CXXFLAGS	:=	$(COMMONFLAGS) -fno-rtti -fno-exceptions -std=gnu++11 
+CXXFLAGS	:=	$(COMMONFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 ASFLAGS		:=	$(ARCH)
-LDFLAGS		:=	-specs=3dsx.specs $(ARCH) -Wl,-Map,$(notdir $*.map) \
-			-Wl,--gc-sections
+LDFLAGS		=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 LIBS		:= 	-lctru
-LIBDIRS		:= 	$(PORTLIBS) $(CTRULIB)
 
+#---------------------------------------------------------------------------------
+# list of directories containing libraries, this must be the top level containing
+# include and lib
+#---------------------------------------------------------------------------------
+LIBDIRS	:= $(CTRULIB)
+
+#---------------------------------------------------------------------------------
+# no real need to edit anything past this point unless you need to add additional
+# rules for different file extensions
 #---------------------------------------------------------------------------------
 ifneq ($(BUILD),$(notdir $(CURDIR)))
 #---------------------------------------------------------------------------------
+
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
 export TOPDIR	:=	$(CURDIR)
+
 export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
-			$(foreach dir,$(DATA),$(CURDIR)/$(dir))
+			$(foreach dir,$(DATA),$(CURDIR)/$(dir)) \
+			$(foreach dir,$(GRAPHICS),$(CURDIR)/$(dir))
+
 export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir \
@@ -51,46 +64,123 @@ CFILES		:=	$(foreach dir,$(SOURCES),$(notdir \
 			$(wildcard $(dir)/*.c)))))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
+BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
+PNGFILES	:=	$(foreach dir,$(GRAPHICS),$(notdir $(wildcard $(dir)/*.png)))
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
 #---------------------------------------------------------------------------------
 ifeq ($(strip $(CPPFILES)),)
-	export LD	:=	$(CC)
-else
-	export LD	:=	$(CXX)
-endif
-
 #---------------------------------------------------------------------------------
+	export LD	:=	$(CC)
+#---------------------------------------------------------------------------------
+else
+#---------------------------------------------------------------------------------
+	export LD	:=	$(CXX)
+#---------------------------------------------------------------------------------
+endif
+#---------------------------------------------------------------------------------
+
 export OFILES	:=	$(addsuffix .o,$(BINFILES)) \
-			$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
+			$(PNGFILES:.png=.bgr.o) \
+			$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o) \
+
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 			$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
 			-I$(CURDIR)/$(BUILD)
+
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
+
+ifeq ($(strip $(ICON)),)
+	icons := $(wildcard *.png)
+	ifneq (,$(findstring $(TARGET).png,$(icons)))
+		export APP_ICON := $(TOPDIR)/$(TARGET).png
+	else
+		ifneq (,$(findstring icon.png,$(icons)))
+			export APP_ICON := $(TOPDIR)/icon.png
+		endif
+	endif
+else
+	export APP_ICON := $(TOPDIR)/$(ICON)
+endif
+
+IMAGEMAGICK	:=	$(shell which convert)
+
+ifeq ($(strip $(NO_SMDH)),)
+	export _3DSXFLAGS += --smdh=$(CURDIR)/$(TARGET).smdh
+endif
 
 .PHONY: $(BUILD) clean all
 
 #---------------------------------------------------------------------------------
-# make targets
-#---------------------------------------------------------------------------------
+ifeq ($(strip $(IMAGEMAGICK)),)
+
+all:
+	@echo "Image Magick not found!"
+	@echo
+	@echo "Please install Image Magick from http://www.imagemagick.org/ to build this example"
+
+else
+
 all: $(BUILD)
 
+endif
+
+#---------------------------------------------------------------------------------
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+
+#---------------------------------------------------------------------------------
 release: $(BUILD)
 	@rm -f $(APP_TITLE)-$(VERSION).zip
 	@zip -9 -r $(APP_TITLE)-$(VERSION).zip * --exclude="*build*" \
 		--exclude="*.git*" --exclude="*.elf" --exclude="*.zip"
+
+#---------------------------------------------------------------------------------
 clean:
 	rm -rf $(BUILD) $(TARGET).{3dsx,elf} $(APP_TITLE)-*.zip
+
+
+#---------------------------------------------------------------------------------
+else
+
+DEPENDS	:=	$(OFILES:.o=.d)
 
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
-else
-DEPENDS		:=	$(OFILES:.o=.d)
+ifeq ($(strip $(NO_SMDH)),)
+.PHONY: all
+all	:	$(OUTPUT).3dsx $(OUTPUT).smdh
+endif
 $(OUTPUT).3dsx	:	$(OUTPUT).elf
 $(OUTPUT).elf	:	$(OFILES)
+
+#---------------------------------------------------------------------------------
+# you need a rule like this for each extension you use as binary data
+#---------------------------------------------------------------------------------
+%.bin.o	:	%.bin
+#---------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	@$(bin2o)
+
+
+
+#---------------------------------------------------------------------------------
+%.bgr.o: %.bgr
+#---------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	@$(bin2o)
+
+#---------------------------------------------------------------------------------
+%.bgr: %.png
+#---------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	@convert $< -rotate 90 $@
+
+-include $(DEPENDS)
+
+#---------------------------------------------------------------------------------------
 endif
+#---------------------------------------------------------------------------------------

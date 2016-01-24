@@ -7,12 +7,12 @@
 #include "config.h"
 #include "misc.h"
 
+#include "boot_screen_bgr.h"
+
 #define DEFAULT_PATH NULL
-#define DEFAULT_DELAY 1500 /* ms */
+#define DEFAULT_DELAY 2500 /* ms */
 #define DEFAULT_PAYLOAD -1 /* <0 - auto, 0 - disable, >0 - enabled */
 #define DEFAULT_OFFSET 0x12000
-#define DEFAULT_CFW_FIX true
-#define DEFAULT_DEBUG false
 #define DEFAULT_SECTION "GLOBAL"
 #define INI_FILE "/boot_config.ini"
 
@@ -54,8 +54,6 @@ int main()
             .delay = DEFAULT_DELAY,
             .payload = DEFAULT_PAYLOAD,
             .offset = DEFAULT_OFFSET,
-            .cfw_fix = DEFAULT_CFW_FIX,
-            .debug = DEFAULT_DEBUG
         }
     };
 
@@ -111,16 +109,25 @@ int main()
             break;
     }
 
-    if (app.config.debug) {
-        debug("\nsection: %s"
-              "\npath: %s"
-              "\ndelay: %llu"
-              "\npayload: %d"
-              "\noffset: %lx"
-              "\ncfw_fix: %d\n",
-              app.config.section, app.config.path, app.config.delay,
-              app.config.payload, app.config.offset, app.config.cfw_fix);
-    }
+    // load boot image in top screen
+    gfxSetDoubleBuffering(GFX_TOP, false);
+    u8* fb = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
+    memcpy(fb, boot_screen_bgr, boot_screen_bgr_size);
+    // print entry information in bottom screen
+    consoleInit(GFX_BOTTOM, NULL);
+    printf("Booting entry:\n\n"
+           "[%s]\n"
+           "\tpath = %s\n"
+           "\tdelay = %llu\n"
+           "\tpayload = %d\n"
+           "\toffset = 0x%lx",
+           app.config.section, app.config.path, app.config.delay,
+           app.config.payload, app.config.offset);
+    // flush, swap framebuffers and wait for VBlank
+    // also known as Voodoo™ fix
+    gfxFlushBuffers();
+    gfxSwapBuffers();
+    gspWaitForVBlank();
 
     return load(app);
 }

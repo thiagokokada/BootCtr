@@ -42,7 +42,7 @@ void wait_key(const u32 key)
 
 void debug(const char *msg, ...)
 {
-    consoleInit(GFX_TOP, NULL);
+    consoleInit(GFX_BOTTOM, NULL);
 
     printf("DEBUG: ");
 
@@ -58,7 +58,7 @@ void debug(const char *msg, ...)
 
 void panic(const char *msg, ...)
 {
-    consoleInit(GFX_TOP, NULL);
+    consoleInit(GFX_BOTTOM, NULL);
 
     printf("ERROR: ");
 

@@ -17,7 +17,7 @@ typedef struct {
     executableMetadata_s em;
 } application;
 
-void boot_fix(int delay, bool cfw_fix);
+void boot_fix(int delay);
 int load_3dsx(application app);
 int load_payload(application app);
 int load(application app);
