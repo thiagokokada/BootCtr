@@ -2,6 +2,10 @@
 
 void boot_fix(int delay)
 {
+    // also known as Voodoo™ fix
+    gfxFlushBuffers();
+    gfxSwapBuffers();
+    gspWaitForVBlank();
     // actually delay boot for some ms
     svcSleepThread(delay * MS_TO_NS);
 }

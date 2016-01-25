@@ -6,11 +6,10 @@
 #include "loader.h"
 #include "config.h"
 #include "misc.h"
-
-#include "boot_screen_bgr.h"
+#include "version.h"
 
 #define DEFAULT_PATH NULL
-#define DEFAULT_DELAY 2500 /* ms */
+#define DEFAULT_DELAY 2000 /* ms */
 #define DEFAULT_PAYLOAD -1 /* <0 - auto, 0 - disable, >0 - enabled */
 #define DEFAULT_OFFSET 0x12000
 #define DEFAULT_SECTION "GLOBAL"
@@ -109,25 +108,24 @@ int main()
             break;
     }
 
-    // load boot image in top screen
-    gfxSetDoubleBuffering(GFX_TOP, false);
-    u8* fb = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
-    memcpy(fb, boot_screen_bgr, boot_screen_bgr_size);
+    // print BootCtr logo
+    // http://patorjk.com/software/taag/#p=display&f=Bigfig&t=BootCtr
+    consoleInit(GFX_TOP, NULL);
+    printf(" _           __\n"
+           "|_) _  _ _|_/  _|_ __\n"
+           "|_)(_)(_) |_\\__ |_ |\n"
+           "           ver. %d.%d.%d\n"
+           "\n"
+           "is loading...", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
     // print entry information in bottom screen
     consoleInit(GFX_BOTTOM, NULL);
-    printf("Booting entry:\n\n"
-           "[%s]\n"
-           "\tpath = %s\n"
-           "\tdelay = %llu\n"
-           "\tpayload = %d\n"
-           "\toffset = 0x%lx",
+    printf("Booting entry [%s]:\n"
+           "\t* path = %s\n"
+           "\t* delay = %llu\n"
+           "\t* payload = %d\n"
+           "\t* offset = 0x%lx",
            app.config.section, app.config.path, app.config.delay,
            app.config.payload, app.config.offset);
-    // flush, swap framebuffers and wait for VBlank
-    // also known as Voodoo™ fix
-    gfxFlushBuffers();
-    gfxSwapBuffers();
-    gspWaitForVBlank();
 
     return load(app);
 }
