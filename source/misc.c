@@ -44,14 +44,14 @@ void debug(const char *msg, ...)
 {
     consoleInit(GFX_BOTTOM, NULL);
 
-    printf("DEBUG: ");
+    printf("DEBUG:\n");
 
     va_list args;
     va_start(args, msg);
     vprintf(msg, args);
     va_end(args);
 
-    printf("\nPress START to continue...\n");
+    printf("\n\nPress START to continue...\n");
 
     wait_key(KEY_START);
 }
@@ -60,14 +60,14 @@ void panic(const char *msg, ...)
 {
     consoleInit(GFX_BOTTOM, NULL);
 
-    printf("ERROR: ");
+    printf("ERROR:\n");
 
     va_list args;
     va_start(args, msg);
     vprintf(msg, args);
     va_end(args);
 
-    printf("\nPress START to reboot...\n");
+    printf("\n\nPress START to reboot...\n");
 
     wait_key(KEY_START);
 

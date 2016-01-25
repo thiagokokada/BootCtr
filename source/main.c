@@ -13,6 +13,7 @@
 #define DEFAULT_PAYLOAD -1 /* <0 - auto, 0 - disable, >0 - enabled */
 #define DEFAULT_OFFSET 0x12000
 #define DEFAULT_SECTION "GLOBAL"
+#define DEFAULT_SPLASH true
 #define INI_FILE "/boot_config.ini"
 
 // handled in main
@@ -53,6 +54,7 @@ int main()
             .delay = DEFAULT_DELAY,
             .payload = DEFAULT_PAYLOAD,
             .offset = DEFAULT_OFFSET,
+            .splash = DEFAULT_SPLASH,
         }
     };
 
@@ -86,46 +88,48 @@ int main()
                 // don't need to check error again
                 ini_parse(INI_FILE, handler, &app.config);
                 if (!app.config.path)
-                    panic("Section [DEFAULT] not found or \"path\" not set");
+                    panic("Section [DEFAULT] not found or \"path\" not set.");
             } else if (app.config.path[0] != '/') {
-                panic("In section [%s], %s is an invalid path",
+                panic("In section [%s], path %s is invalid.",
                         app.config.section, app.config.path);
             } else if (!file_exists(app.config.path)) {
-                panic("In section [%s], file %s not found",
+                panic("In section [%s], file %s not found.",
                         app.config.section, app.config.path);
             }
             break;
         case -1:
-            panic("Config file %s not found", INI_FILE);
+            panic("Config file %s not found.", INI_FILE);
             break;
         case -2:
             // should not happen, however better be safe than sorry
-            panic("Config file %s too big", INI_FILE);
+            panic("Config file %s too big.", INI_FILE);
             break;
         default:
-            panic("Error found in config file %s on line %d",
+            panic("Error found in config file %s on line %d.",
                     INI_FILE, config_err);
             break;
     }
 
-    // print BootCtr logo
-    // http://patorjk.com/software/taag/#p=display&f=Bigfig&t=BootCtr
-    consoleInit(GFX_TOP, NULL);
-    printf(" _           __\n"
-           "|_) _  _ _|_/  _|_ __\n"
-           "|_)(_)(_) |_\\__ |_ |\n"
-           "           ver. %d.%d.%d\n"
-           "\n"
-           "is loading...", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
-    // print entry information in bottom screen
-    consoleInit(GFX_BOTTOM, NULL);
-    printf("Booting entry [%s]:\n"
-           "\t* path = %s\n"
-           "\t* delay = %llu\n"
-           "\t* payload = %d\n"
-           "\t* offset = 0x%lx",
-           app.config.section, app.config.path, app.config.delay,
-           app.config.payload, app.config.offset);
+    if (app.config.splash) {
+        // print BootCtr logo
+        // http://patorjk.com/software/taag/#p=display&f=Bigfig&t=BootCtr
+        consoleInit(GFX_TOP, NULL);
+        printf(" _           __\n"
+               "|_) _  _ _|_/  _|_ __\n"
+               "|_)(_)(_) |_\\__ |_ |\n"
+               "           ver. %d.%d.%d\n"
+               "\n"
+               "is loading...", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
+        // print entry information in bottom screen
+        consoleInit(GFX_BOTTOM, NULL);
+        printf("Booting entry [%s]:\n"
+               "\t* path = %s\n"
+               "\t* delay = %llu\n"
+               "\t* payload = %d\n"
+               "\t* offset = 0x%lx",
+               app.config.section, app.config.path, app.config.delay,
+               app.config.payload, app.config.offset);
+    }
 
     return load(app);
 }

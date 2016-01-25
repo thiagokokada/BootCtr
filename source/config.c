@@ -11,6 +11,8 @@ int handler(void *user, const char *section, const char *name, const char *value
 		pconfig->payload = strtol(value, NULL, 10);
 	} else if (MATCH(pconfig->section, "offset")) {
 		pconfig->offset = strtoul(value, NULL, 0);
+	} else if (MATCH(pconfig->section, "splash")) {
+		pconfig->splash = strtol(value, NULL, 10) ? true : false;
 	}
 	return 1;
 }
