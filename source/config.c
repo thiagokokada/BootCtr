@@ -13,6 +13,8 @@ int handler(void *user, const char *section, const char *name, const char *value
 		pconfig->offset = strtoul(value, NULL, 0);
 	} else if (MATCH(pconfig->section, "splash")) {
 		pconfig->splash = strtol(value, NULL, 10) ? true : false;
+	} else if (MATCH(pconfig->section, "splash_image")) {
+		pconfig->splash_image = strdup(value);
 	}
 	return 1;
 }

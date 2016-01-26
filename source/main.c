@@ -14,6 +14,7 @@
 #define DEFAULT_OFFSET 0x12000
 #define DEFAULT_SECTION "GLOBAL"
 #define DEFAULT_SPLASH true
+#define DEFAULT_SPLASH_IMAGE NULL
 #define INI_FILE "/boot_config.ini"
 
 // handled in main
@@ -55,6 +56,7 @@ int main()
             .payload = DEFAULT_PAYLOAD,
             .offset = DEFAULT_OFFSET,
             .splash = DEFAULT_SPLASH,
+            .splash_image = DEFAULT_SPLASH_IMAGE,
         }
     };
 
@@ -111,24 +113,58 @@ int main()
     }
 
     if (app.config.splash) {
-        // print BootCtr logo
-        // http://patorjk.com/software/taag/#p=display&f=Bigfig&t=BootCtr
-        consoleInit(GFX_TOP, NULL);
-        printf(" _           __\n"
-               "|_) _  _ _|_/  _|_ __\n"
-               "|_)(_)(_) |_\\__ |_ |\n"
-               "           ver. %d.%d.%d\n"
-               "\n"
-               "is loading...", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
         // print entry information in bottom screen
         consoleInit(GFX_BOTTOM, NULL);
         printf("Booting entry [%s]:\n"
                "\t* path = %s\n"
                "\t* delay = %llu\n"
                "\t* payload = %d\n"
-               "\t* offset = 0x%lx",
+               "\t* offset = 0x%lx\n",
                app.config.section, app.config.path, app.config.delay,
                app.config.payload, app.config.offset);
+
+        // try to load user set splash image
+        if (app.config.splash_image) {
+            // load image in memory, doing proper error checking
+            FILE *splash_file = fopen(app.config.splash_image, "rb");
+            if (!splash_file) {
+                printf("\nCouldn't open splash image %s.\n",
+                        app.config.splash_image);
+                goto force_ascii_splash;
+            }
+            fseek(splash_file, 0, SEEK_END);
+            u32 splash_size = ftell(splash_file);
+            fseek(splash_file, 0, SEEK_SET);
+            u8 *splash_buf = malloc(splash_size);
+            if (!splash_buf) {
+                printf("\nSplash image %s is too big.\n",
+                        app.config.splash_image);
+                goto force_ascii_splash;
+            }
+            size_t splash_read = fread(splash_buf, 1, splash_size, splash_file);
+            if (splash_read != splash_size) {
+                printf("\nError while reading splash image %s.\n",
+                        app.config.splash_image);
+                goto force_ascii_splash;
+            }
+            // disable double buffering, to avoid flickering
+            gfxSetDoubleBuffering(GFX_TOP, false);
+            // copy splash image to framebuffer
+            memcpy(gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL),
+                    splash_buf, splash_size);
+        } else {
+// in case of error while loading splash image, force ASCII splash screen
+force_ascii_splash:
+            // print BootCtr logo
+            // http://patorjk.com/software/taag/#p=display&f=Bigfig&t=BootCtr
+            consoleInit(GFX_TOP, NULL);
+            printf(" _           __\n"
+                   "|_) _  _ _|_/  _|_ __\n"
+                   "|_)(_)(_) |_\\__ |_ |\n"
+                   "           ver. %d.%d.%d\n"
+                   "\n"
+                   "is loading...", VER_MAJOR, VER_MINOR, VER_PATCH);
+        }
     }
 
     return load(app);

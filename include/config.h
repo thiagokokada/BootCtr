@@ -13,6 +13,7 @@ typedef struct {
     int payload;
     unsigned long offset;
     bool splash;
+    char *splash_image;
 } configuration;
 
 #define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0
