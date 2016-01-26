@@ -17,7 +17,6 @@ TARGET		:=	boot
 BUILD		:=	build
 SOURCES		:=	source libs/inih libs/CakeBrah/source libs/CakeBrah/source/libkhax
 INCLUDES	:=	include libs/inih libs/CakeBrah/include
-GRAPHICS	:=	gfx
 NO_SMDH		:=	1
 APP_TITLE	:=	BootCtr
 APP_DESCRIPTION	:=	A simple boot manager for 3DS
@@ -91,40 +90,10 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
-ifeq ($(strip $(ICON)),)
-	icons := $(wildcard *.png)
-	ifneq (,$(findstring $(TARGET).png,$(icons)))
-		export APP_ICON := $(TOPDIR)/$(TARGET).png
-	else
-		ifneq (,$(findstring icon.png,$(icons)))
-			export APP_ICON := $(TOPDIR)/icon.png
-		endif
-	endif
-else
-	export APP_ICON := $(TOPDIR)/$(ICON)
-endif
-
-IMAGEMAGICK	:=	$(shell which convert)
-
-ifeq ($(strip $(NO_SMDH)),)
-	export _3DSXFLAGS += --smdh=$(CURDIR)/$(TARGET).smdh
-endif
-
 .PHONY: $(BUILD) clean all
 
 #---------------------------------------------------------------------------------
-ifeq ($(strip $(IMAGEMAGICK)),)
-
-all:
-	@echo "Image Magick not found!"
-	@echo
-	@echo "Please install Image Magick from http://www.imagemagick.org/ to build this example"
-
-else
-
 all: $(BUILD)
-
-endif
 
 #---------------------------------------------------------------------------------
 $(BUILD):
@@ -141,7 +110,6 @@ release: $(BUILD)
 clean:
 	rm -rf $(BUILD) $(TARGET).{3dsx,elf} $(APP_TITLE)-*.zip
 
-
 #---------------------------------------------------------------------------------
 else
 
@@ -156,31 +124,8 @@ all	:	$(OUTPUT).3dsx $(OUTPUT).smdh
 endif
 $(OUTPUT).3dsx	:	$(OUTPUT).elf
 $(OUTPUT).elf	:	$(OFILES)
-
-#---------------------------------------------------------------------------------
-# you need a rule like this for each extension you use as binary data
-#---------------------------------------------------------------------------------
-%.bin.o	:	%.bin
-#---------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	@$(bin2o)
-
-
-
-#---------------------------------------------------------------------------------
-%.bgr.o: %.bgr
-#---------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	@$(bin2o)
-
-#---------------------------------------------------------------------------------
-%.bgr: %.png
-#---------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	@convert $< -rotate 90 $@
-
 -include $(DEPENDS)
 
-#---------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
 endif
-#---------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
