@@ -18,6 +18,10 @@ Features
 CakesFW.
 * Allows up-to **16+1** (12 using keys plus 1 default) homebrews in O3DS,
 up-to **22+1** homebrews in N3DS.
+* Support for boot screens, including an ASCII art (default) or custom
+images in [BGR][bgr] format:
+
+[![Boot screen support!](http://img.youtube.com/vi/_rdHWEJwhLA/0.jpg)](http://www.youtube.com/watch?v=_rdHWEJwhLA)
 
 Installation
 ------------
@@ -98,3 +102,4 @@ Credits
 [ofc]: https://gbatemp.net/threads/re-release-bootctr-a-simple-boot-manager-for-3ds.401630/
 [bhm]: https://github.com/patois/Brahma
 [khx]: https://github.com/Myriachan/libkhax
+[bgr]: https://xem.github.io/3DShomebrew/tools/image-to-bin.html
