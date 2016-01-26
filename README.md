@@ -11,12 +11,12 @@ Any question can be done in the [official topic][ofc] in GBAtemp forum.
 Features
 --------
 
-* Supports both ``.3dsx`` files and binary payloads (for example,
-``/rxTools/sys/code.bin``, ``/Cakes.dat``, etc.).
-* Supports advanced features in ``.3dsx`` files, like network support.
+* Supports both `.3dsx` files and binary payloads (for example, `/Cakes.dat`,
+* `/ReiNand.dat`, `/rxTools/sys/code.bin`, etc.).
+* Supports advanced features in `.3dsx` files, like network support.
 * Boot delay, to increase the boot rate chance of CFWs like rxTools and
 CakesFW.
-* Allows up-to **16+1** (12 using keys plus 1 default) homebrews in O3DS,
+* Allows up-to **16+1** (16 using keys plus 1 default) homebrews in O3DS,
 up-to **22+1** homebrews in N3DS.
 * Support for boot screens, including an ASCII art (default) or custom
 images in [BGR][bgr] format:
@@ -27,17 +27,17 @@ Installation
 ------------
 
 * (Optional, but recommended) Install [HomeMenuHax][hmh] and set up autoboot.
-* Modify, according to your needs, the included ``boot_config.ini`` file.
-* Copy both ``boot.3dsx`` and ``boot_config.ini`` to the root of your SD card.
+* Modify, according to your needs, the included `boot_config.ini` file.
+* Copy both `boot.3dsx` and `boot_config.ini` to the root of your SD card.
 
 Usage
 -----
 
 * Boot up your homebrew hax as usual.
-* If you do nothing, then ``boot_default.3dsx`` (or anything that you setup in
-[DEFAULT] section) will be launched.
+* If you do nothing, then `boot_default.3dsx` (or anything that you setup in
+`[DEFAULT]` section) will be launched.
 * If you want to load an alternative launcher, hold down a button (configured
-according your ``boot_config.ini``) to boot it.
+according your `boot_config.ini`) to boot it.
 
 Compiling
 ---------
@@ -46,15 +46,15 @@ First, clone this repository including the submodules:
 
     $ git clone --recursive https://github.com/m45t3r/BootCtr.git
 
-Compile a new binary using the included ``Makefile`` and [devkitPro][dkp].
+Compile a new binary using the included `Makefile` and [devkitPro][dkp].
 If devkitPro is correctly installed all you need to do is:
 
     $ make
 
-And copy the new ``boot.3dsx`` file to your SD card. Do not forget to copy
-``boot_config.ini`` too.
+And copy the new `boot.3dsx` file to your SD card. Do not forget to copy
+`boot_config.ini` too.
 
-Alternatively you can run the command below too (needs ``zip`` and ``git``
+Alternatively you can run the command below too (needs `zip` and `git`
 installed):
 
     $ make release
@@ -67,7 +67,7 @@ License
 
 The original source code ([Homebrew Launcher][hbl]) does not have a proper
 license, and since this code is derived from it I can't simple change the
-license for something that I would like. The ``README.md`` from HBL says:
+license for something that I would like. The `README.md` from HBL says:
 
 > "Feel free to use code from hbmenu for your own projects, so long as you
 give credit to its original authors."
@@ -77,7 +77,7 @@ this project. Of course, all of my modifications is distributed in a similar
 license, so go ahead and fork and do something interesting.
 
 CakeBrah does not seem to have a proper license too. However, [brahma][bhm]
-uses a license similar to MIT (see ``README-brahma`` for details), and
+uses a license similar to MIT (see `README-brahma` for details), and
 CakeBrah is a derived work so it should use a similar license.
 
 [inih][inh] is distributed under New BSD License, while [libkhax][khx] (not
