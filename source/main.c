@@ -12,7 +12,7 @@
 #define DEFAULT_PAYLOAD -1 /* <0 - auto, 0 - disable, >0 - enabled */
 #define DEFAULT_OFFSET 0x12000
 #define DEFAULT_SECTION "GLOBAL"
-#define DEFAULT_SPLASH true
+#define DEFAULT_SPLASH 3 /* 0 - disabled, 1 - splash screen, 2 - entry info, 3 - both */
 #define DEFAULT_SPLASH_IMAGE NULL
 #define INI_FILE "/boot_config.ini"
 
@@ -111,7 +111,7 @@ int main()
             break;
     }
 
-    if (app.config.splash) {
+    if (app.config.splash >= 2) {
         // print entry information in bottom screen
         consoleInit(GFX_BOTTOM, NULL);
         printf("Booting entry [%s]:\n"
@@ -121,7 +121,9 @@ int main()
                "\t* offset = 0x%lx\n",
                app.config.section, app.config.path, app.config.delay,
                app.config.payload, app.config.offset);
-
+    }
+    
+    if (app.config.splash == 1 || app.config.splash >= 3) {
         // try to load user set splash image
         if (app.config.splash_image) {
             // load image in memory, doing proper error checking

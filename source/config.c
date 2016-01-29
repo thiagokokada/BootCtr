@@ -12,7 +12,7 @@ int handler(void *user, const char *section, const char *name, const char *value
 	} else if (MATCH(pconfig->section, "offset")) {
 		pconfig->offset = strtoul(value, NULL, 0);
 	} else if (MATCH(pconfig->section, "splash")) {
-		pconfig->splash = strtol(value, NULL, 10) ? true : false;
+		pconfig->splash = strtol(value, NULL, 10);
 	} else if (MATCH(pconfig->section, "splash_image")) {
 		pconfig->splash_image = strdup(value);
 	}

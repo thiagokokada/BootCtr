@@ -12,7 +12,7 @@ typedef struct {
     unsigned long long delay;
     int payload;
     unsigned long offset;
-    bool splash;
+    int splash;
     char *splash_image;
 } configuration;
 
