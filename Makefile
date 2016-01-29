@@ -12,7 +12,7 @@ include $(DEVKITARM)/3ds_rules
 #---------------------------------------------------------------------------------
 # homebrew metadata
 #---------------------------------------------------------------------------------
-VERSION		:=	$(shell git describe --tags || echo "UNKNOWN")
+VERSION		:=	$(shell git describe --abbrev=4 --always --dirty --tags || echo "UNKNOWN")
 TARGET		:=	boot
 BUILD		:=	build
 SOURCES		:=	source libs/inih libs/CakeBrah/source libs/CakeBrah/source/libkhax
@@ -28,7 +28,7 @@ APP_AUTHOR	:=	m45t3r
 ARCH		:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard
 COMMONFLAGS	:=	$(ARCH) $(INCLUDE) -Wall -Wextra -Os -mword-relocations \
 			-fomit-frame-pointer -ffunction-sections -ffast-math \
-			-DARM11 -D_3DS
+			-DARM11 -D_3DS -DVERSION_STRING="\"$(VERSION)\""
 CFLAGS		:=	$(COMMONFLAGS) -std=gnu11
 CXXFLAGS	:=	$(COMMONFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 ASFLAGS		:=	$(ARCH)

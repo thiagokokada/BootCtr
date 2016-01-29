@@ -6,7 +6,6 @@
 #include "loader.h"
 #include "config.h"
 #include "misc.h"
-#include "version.h"
 
 #define DEFAULT_PATH NULL
 #define DEFAULT_DELAY 2000 /* ms */
@@ -161,9 +160,9 @@ force_ascii_splash:
             printf(" _           __\n"
                    "|_) _  _ _|_/  _|_ __\n"
                    "|_)(_)(_) |_\\__ |_ |\n"
-                   "           ver. %d.%d.%d\n"
+                   "ver. %s\n"
                    "\n"
-                   "is loading...", VER_MAJOR, VER_MINOR, VER_PATCH);
+                   "is loading...", VERSION_STRING);
         }
     }
 
