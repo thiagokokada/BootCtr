@@ -103,8 +103,7 @@ $(BUILD):
 #---------------------------------------------------------------------------------
 release: $(BUILD)
 	@rm -f $(APP_TITLE)-$(VERSION).zip
-	@zip -9 -r $(APP_TITLE)-$(VERSION).zip * --exclude="*build*" \
-		--exclude="*.git*" --exclude="*.elf" --exclude="*.zip"
+	@zip -9 -r $(APP_TITLE)-$(VERSION).zip boot{.3dsx,_config.ini} README.md splash/
 
 #---------------------------------------------------------------------------------
 clean:
