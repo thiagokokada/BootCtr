@@ -160,7 +160,7 @@ force_ascii_splash:
             printf(" _           __\n"
                    "|_) _  _ _|_/  _|_ __\n"
                    "|_)(_)(_) |_\\__ |_ |\n"
-                   "ver. %s\n"
+                   "%s\n"
                    "\n"
                    "is loading...", VERSION_STRING);
         }
