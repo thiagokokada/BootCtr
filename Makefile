@@ -90,7 +90,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
-.PHONY: $(BUILD) $(INCLUDES) clean all
+.PHONY: $(BUILD) $(INCLUDES) clean all release
 
 #---------------------------------------------------------------------------------
 all: $(BUILD)
