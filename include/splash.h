@@ -12,5 +12,5 @@
                             "\n" \
                             "is loading...")
 
-void splash_ascii(void);
-void splash_image(char *splash_path);
+int splash_ascii(void);
+int splash_image(char *splash_path);

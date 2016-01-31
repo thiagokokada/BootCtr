@@ -1,19 +1,18 @@
 #include "splash.h"
 
-void splash_ascii(void)
+int splash_ascii(void)
 {
     // print BootCtr logo
     // http://patorjk.com/software/taag/#p=display&f=Bigfig&t=BootCtr
     consoleInit(GFX_TOP, NULL);
-    printf(ASCII_ART_TEMPLATE, VERSION_STRING);
+    return printf(ASCII_ART_TEMPLATE, VERSION_STRING);
 }
 
-void splash_image(char *splash_path)
+int splash_image(char *splash_path)
 {
     // load image in memory, doing proper error checking
     FILE *splash_file = fopen(splash_path, "rb");
     if (!splash_file) {
-        // show ASCII splash art in case of error
         printf("\nCouldn't open splash image %s.\n", splash_path);
         goto force_splash_ascii;
     }
@@ -35,8 +34,10 @@ void splash_image(char *splash_path)
     // copy splash image to framebuffer
     memcpy(gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL),
             splash_buf, splash_size);
-    return;
+    return 0;
 
+// force ASCII splash art in case of error
 force_splash_ascii:
     splash_ascii();
+    return -1;
 }
