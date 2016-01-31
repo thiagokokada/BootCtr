@@ -2,12 +2,13 @@
 
 #include <3ds.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 #include "boot.h"
-#include "scanner.h"
+#include "brahma.h"
 #include "config.h"
 #include "misc.h"
-#include "brahma.h"
+#include "scanner.h"
 
 #define MAX_PAYLOAD_SIZE 0x10000
 #define MS_TO_NS 1000000ULL

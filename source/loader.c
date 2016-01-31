@@ -18,7 +18,7 @@ int load_3dsx(application app)
 
 int load_payload(application app)
 {
-    enum { buf = 512 };
+    enum { buf = 0x200 };
     char error_msg[buf];
 
     if (brahma_init()) {
