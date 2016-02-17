@@ -1,6 +1,8 @@
 BootCtr - A simple boot manager for 3DS
 =======================================
 
+![BootCtr logo](bootctr.png?raw=true)
+
 Based on 3DS Homebrew Launcher code by [Smealum][hbl]. The original version is
 from [mashers][hbe], This version removed some unused code used by Homebrew
 Launcher that isn't necessary in a simple bootloader, and added some
@@ -29,6 +31,11 @@ Installation
 * (Optional, but recommended) Install [HomeMenuHax][hmh] and set up autoboot.
 * Modify, according to your needs, the included `boot_config.ini` file.
 * Copy both `boot.3dsx` and `boot_config.ini` to the root of your SD card.
+* For splash screen, look inside `splash` folder for some ready to use `.bin`
+files (including source file/preview in `.png` format), or use the included
+`img2bgr.sh` script to convert your own images (or convert them using this
+[site][i2b]). Dont't forget to edit `boot_config.ini` to include `splash_file`
+option in the desired entry.
 
 Usage
 -----
@@ -91,6 +98,7 @@ Credits
 * @Cpasjuste, for some ideas from his [CtrBootManager][cbm]
 * @benhoyt, for [inih][inh]
 * @mid-kid and others, for [CakeBrah][ckb]
+* @pbanj from GBAtemp for the [logo and splash screen][lgs]
 
 [hbl]: https://github.com/smealum/3ds_hb_menu
 [hbe]: https://gbatemp.net/threads/release-homebrew-emergency-launcher.399394/
@@ -103,3 +111,5 @@ Credits
 [bhm]: https://github.com/patois/Brahma
 [khx]: https://github.com/Myriachan/libkhax
 [bgr]: https://xem.github.io/3DShomebrew/tools/image-to-bin.html
+[lgs]: https://gbatemp.net/threads/re-release-bootctr-a-simple-boot-manager-for-3ds.401630/page-14#post-6083200
+[i2b]: https://xem.github.io/3DShomebrew/tools/image-to-bin.html
