@@ -1,10 +1,5 @@
 #include "misc.h"
 
-int file_exists(const char *fname)
-{
-    return access(fname, F_OK) == 0;
-}
-
 // http://stackoverflow.com/a/5309508
 char *get_filename_ext(const char *filename)
 {

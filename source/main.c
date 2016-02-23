@@ -1,5 +1,8 @@
 #include <3ds.h>
+#include <errno.h>
+#include <unistd.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "filesystem.h"
 #include "loader.h"
@@ -93,9 +96,8 @@ int main()
             } else if (app.config.path[0] != '/') {
                 panic("In section [%s], path %s is invalid.",
                         app.config.section, app.config.path);
-            } else if (!file_exists(app.config.path)) {
-                panic("In section [%s], file %s not found.",
-                        app.config.section, app.config.path);
+            } else if (access(app.config.path, R_OK)) {
+                panic("Error: %s", strerror(errno));
             }
             break;
         case -1:

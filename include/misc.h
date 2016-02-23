@@ -10,7 +10,6 @@
 
 #include "filesystem.h"
 
-int file_exists(const char *fname);
 char *get_filename_ext(const char *filename);
 void strtolower(char *str);
 void reboot(void);
