@@ -4,7 +4,7 @@ BootCtr - A simple boot manager for 3DS
 ![BootCtr logo](bootctr.png?raw=true)
 
 Based on 3DS Homebrew Launcher code by [Smealum][hbl]. The original version is
-from [mashers][hbe], This version removed some unused code used by Homebrew
+from [mashers][hbe]. This version removed some unused code used by Homebrew
 Launcher that isn't necessary in a simple bootloader, and added some
 interesting new features.
 
